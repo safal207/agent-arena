@@ -1,0 +1,12 @@
+.env*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*
+node_modules/
+*.log
+*.log.*
+logs/
+__pycache__/
+*.py[cod]

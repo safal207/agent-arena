@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Captured from an isolated local createArenaServer instance with the two built-in scripted demo bots.",
+  "mode": "fight",
+  "agentTypes": [
+    "demo",
+    "demo"
+  ],
+  "matchId": "7251c6e0-d57a-41a2-b50e-293a5d1a1dd1",
+  "maxTurns": 36,
+  "winnerAgentId": "demo-storm",
+  "frames": [
+    {
+      "turn": 0,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 100,
+        "x": 22,
+        "energy": 100,
+        "action": "guard"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 100,
+        "x": 78,
+        "energy": 100,
+        "action": "guard"
+      },
+      "events": [
+        "Шторм и Страж выходят на арену."
+      ]
+    },
+    {
+      "turn": 1,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 100,
+        "x": 31,
+        "energy": 100,
+        "action": "approach"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 100,
+        "x": 69,
+        "energy": 100,
+        "action": "approach"
+      },
+      "events": [
+        "Бойцы меняют позицию."
+      ]
+    },
+    {
+      "turn": 2,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 100,
+        "x": 40,
+        "energy": 100,
+        "action": "approach"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 100,
+        "x": 60,
+        "energy": 100,
+        "action": "approach"
+      },
+      "events": [
+        "Бойцы меняют позицию."
+      ]
+    },
+    {
+      "turn": 3,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 83,
+        "x": 40,
+        "energy": 75,
+        "action": "special"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 74,
+        "x": 60,
+        "energy": 90,
+        "action": "kick"
+      },
+      "events": [
+        "Шторм: особый приём — 26 урона.",
+        "Страж: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 4,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 83,
+        "x": 40,
+        "energy": 65,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 69,
+        "x": 60,
+        "energy": 100,
+        "action": "guard"
+      },
+      "events": [
+        "Шторм: удар ногой — блок, 5 урона."
+      ]
+    },
+    {
+      "turn": 5,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 66,
+        "x": 40,
+        "energy": 55,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 52,
+        "x": 60,
+        "energy": 90,
+        "action": "kick"
+      },
+      "events": [
+        "Шторм: удар ногой — 17 урона.",
+        "Страж: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 6,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 49,
+        "x": 40,
+        "energy": 30,
+        "action": "special"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 26,
+        "x": 60,
+        "energy": 80,
+        "action": "kick"
+      },
+      "events": [
+        "Шторм: особый приём — 26 урона.",
+        "Страж: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 7,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 32,
+        "x": 40,
+        "energy": 20,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 9,
+        "x": 60,
+        "energy": 70,
+        "action": "kick"
+      },
+      "events": [
+        "Шторм: удар ногой — 17 урона.",
+        "Страж: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 8,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 32,
+        "x": 40,
+        "energy": 10,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 4,
+        "x": 60,
+        "energy": 88,
+        "action": "guard"
+      },
+      "events": [
+        "Шторм: удар ногой — блок, 5 урона."
+      ]
+    },
+    {
+      "turn": 9,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 27,
+        "x": 40,
+        "energy": 28,
+        "action": "guard"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 4,
+        "x": 60,
+        "energy": 78,
+        "action": "kick"
+      },
+      "events": [
+        "Страж: удар ногой — блок, 5 урона."
+      ]
+    },
+    {
+      "turn": 10,
+      "status": "finished",
+      "winnerAgentId": "demo-storm",
+      "left": {
+        "agentId": "demo-storm",
+        "name": "Шторм",
+        "hp": 10,
+        "x": 40,
+        "energy": 18,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "demo-guardian",
+        "name": "Страж",
+        "hp": 0,
+        "x": 60,
+        "energy": 68,
+        "action": "kick"
+      },
+      "events": [
+        "Шторм: удар ногой — 17 урона.",
+        "Страж: удар ногой — 17 урона.",
+        "Победа: Шторм."
+      ]
+    }
+  ]
+}

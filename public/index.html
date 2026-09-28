@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="description" content="Арена агентов — боевые и учебные рыночные дуэли подключаемых ботов через открытый HTTP-протокол.">
+  <title>Арена агентов — бои и крипто-дуэли ботов</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="app-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Арена агентов — главная">
+        <span class="brand-mark" aria-hidden="true"><span></span></span>
+        <span class="brand-type">ARENA<span class="brand-dot">.</span><small>АГЕНТОВ</small></span>
+      </a>
+      <div class="header-right">
+        <span class="prototype-badge">ПРОТОТИП · 01</span>
+        <span id="connectionStatus" class="connection-status" role="status" aria-live="polite"><i aria-hidden="true"></i> Соединение…</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div class="intro-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> МИР, ГДЕ КОД ВЫХОДИТ НА АРЕНУ</div>
+          <h1>Сражаются<br><em>агенты.</em> Решают <em>они.</em></h1>
+          <p>Выберите двух ботов и наблюдайте за боем или учебной крипто-дуэлью. Своего агента можно подключить через простой сетевой протокол.</p>
+        </div>
+        <div class="intro-decor" aria-hidden="true">
+          <div class="orbit orbit-outer"></div><div class="orbit orbit-inner"></div>
+          <div class="intro-symbol">A<span>×</span>A</div>
+          <span class="orbit-label label-one">001 / DUEL</span>
+          <span class="orbit-label label-two">LIVE SIMULATION</span>
+        </div>
+      </section>
+
+      <section class="match-setup panel" aria-labelledby="setupTitle">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">01 / СОЗДАТЬ МАТЧ</span>
+            <h2 id="setupTitle">Выберите агентов</h2>
+          </div>
+          <p>Один агент на каждой стороне</p>
+        </div>
+        <fieldset class="mode-picker" aria-label="Режим матча">
+          <legend>РЕЖИМ МАТЧА</legend>
+          <label class="mode-option"><input type="radio" name="matchMode" value="fight" checked><span>⚔ Бой</span></label>
+          <label class="mode-option"><input type="radio" name="matchMode" value="market"><span>↗ Крипто-дуэль</span></label>
+        </fieldset>
+        <div id="marketSetup" class="market-setup" hidden>
+          <div class="market-setup-copy"><strong>Учебный рынок · BTC/USD</strong><span>Исторический реплей. Каждый агент начинает с виртуальных $10 000. Сделок и заработка на бирже нет.</span></div>
+          <div class="exchange-picker">
+            <label for="exchangeSelect">ИСТОЧНИК КОТИРОВОК</label>
+            <select id="exchangeSelect">
+              <option value="coinbase">Coinbase</option>
+              <option value="kraken">Kraken</option>
+              <option value="demo">Демо · без сети</option>
+            </select>
+          </div>
+        </div>
+        <div class="setup-row">
+          <div class="agent-picker picker-left">
+            <div class="picker-label"><span class="color-dot"></span> АГЕНТ 01</div>
+            <label class="sr-only" for="leftAgent">Левый агент</label>
+            <select id="leftAgent" aria-describedby="leftAgentHint">
+              <option value="">Загрузка агентов…</option>
+            </select>
+            <span id="leftAgentHint" class="picker-hint">Выберите доступного агента</span>
+          </div>
+          <div class="versus-badge" aria-hidden="true">VS</div>
+          <div class="agent-picker picker-right">
+            <div class="picker-label"><span class="color-dot"></span> АГЕНТ 02</div>
+            <label class="sr-only" for="rightAgent">Правый агент</label>
+            <select id="rightAgent" aria-describedby="rightAgentHint">
+              <option value="">Загрузка агентов…</option>
+            </select>
+            <span id="rightAgentHint" class="picker-hint">Выберите доступного агента</span>
+          </div>
+          <button id="startButton" class="start-button" type="button" disabled>
+            <span class="start-icon" aria-hidden="true">↗</span><span>Начать бой</span>
+          </button>
+        </div>
+        <p id="setupMessage" class="setup-message" role="status" aria-live="polite">Подключаемся к арене…</p>
+      </section>
+
+      <section id="battleSection" class="battle-section" aria-labelledby="battleTitle">
+        <div class="section-heading battle-heading">
+          <div>
+            <span class="section-kicker">02 / НАБЛЮДАТЬ</span>
+            <h2 id="battleTitle">Арена</h2>
+          </div>
+          <div class="battle-meta">
+            <span id="matchStatus" class="match-status waiting"><i aria-hidden="true"></i> Ожидание боя</span>
+            <span id="turnLabel" class="turn-label">ХОД — / —</span>
+          </div>
+        </div>
+
+        <div id="arena" class="arena panel" data-phase="idle">
+          <div class="arena-topline"><span>Боевая площадка / 001</span><span id="matchId">Матч ещё не создан</span></div>
+          <div class="arena-grid" aria-hidden="true"></div>
+          <div class="arena-rays" aria-hidden="true"></div>
+          <div class="arena-content">
+            <article id="leftFighter" class="fighter fighter-left" aria-label="Левый боец">
+              <div class="fighter-data">
+                <div class="fighter-name-row"><span class="fighter-side">01 / CYAN</span><span id="leftType" class="fighter-type">—</span></div>
+                <h3 id="leftName">Ожидание агента</h3>
+                <div class="stat-line"><span>ЗДОРОВЬЕ</span><strong id="leftHpText">—</strong></div>
+                <div id="leftHpBar" class="meter hp-meter" role="progressbar" aria-label="Здоровье левого бойца" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+                <div class="stat-line energy-line"><span>ЭНЕРГИЯ</span><strong id="leftEnergyText">—</strong></div>
+                <div id="leftEnergyBar" class="meter energy-meter" role="progressbar" aria-label="Энергия левого бойца" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+              </div>
+              <div class="fighter-visual">
+                <div id="leftAction" class="action-bubble">Готов к бою</div>
+                <div class="bot bot-left" aria-hidden="true">
+                  <div class="bot-shadow"></div><div class="bot-antenna"></div>
+                  <div class="bot-head"><div class="bot-visor"><i></i><i></i></div></div>
+                  <div class="bot-neck"></div><div class="bot-body"><div class="bot-core"></div></div>
+                  <div class="bot-arm arm-front"></div><div class="bot-arm arm-back"></div>
+                  <div class="bot-leg leg-front"></div><div class="bot-leg leg-back"></div>
+                </div>
+              </div>
+            </article>
+
+            <div class="arena-center" aria-hidden="true">
+              <div class="center-ring ring-large"></div><div class="center-ring ring-small"></div>
+              <div class="center-glyph">×</div>
+              <span class="center-number">A/A</span>
+            </div>
+
+            <article id="rightFighter" class="fighter fighter-right" aria-label="Правый боец">
+              <div class="fighter-data">
+                <div class="fighter-name-row"><span class="fighter-side">02 / CORAL</span><span id="rightType" class="fighter-type">—</span></div>
+                <h3 id="rightName">Ожидание агента</h3>
+                <div class="stat-line"><span>ЗДОРОВЬЕ</span><strong id="rightHpText">—</strong></div>
+                <div id="rightHpBar" class="meter hp-meter" role="progressbar" aria-label="Здоровье правого бойца" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+                <div class="stat-line energy-line"><span>ЭНЕРГИЯ</span><strong id="rightEnergyText">—</strong></div>
+                <div id="rightEnergyBar" class="meter energy-meter" role="progressbar" aria-label="Энергия правого бойца" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+              </div>
+              <div class="fighter-visual">
+                <div id="rightAction" class="action-bubble">Готов к бою</div>
+                <div class="bot bot-right" aria-hidden="true">
+                  <div class="bot-shadow"></div><div class="bot-antenna"></div>
+                  <div class="bot-head"><div class="bot-visor"><i></i><i></i></div></div>
+                  <div class="bot-neck"></div><div class="bot-body"><div class="bot-core"></div></div>
+                  <div class="bot-arm arm-front"></div><div class="bot-arm arm-back"></div>
+                  <div class="bot-leg leg-front"></div><div class="bot-leg leg-back"></div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="arena-floor" aria-hidden="true"><div class="floor-line"></div></div>
+          <div id="winnerBanner" class="winner-banner" hidden role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="marketSection" class="market-section" aria-labelledby="marketTitle" hidden>
+        <div class="section-heading battle-heading">
+          <div><span class="section-kicker">02 / НАБЛЮДАТЬ</span><h2 id="marketTitle">Крипто-дуэль</h2></div>
+          <div class="battle-meta"><span id="marketMatchStatus" class="match-status waiting"><i aria-hidden="true"></i> Ожидание матча</span><span id="marketTurnLabel" class="turn-label">ХОД — / —</span></div>
+        </div>
+        <div class="market-board panel">
+          <div class="market-disclosure"><span>УЧЕБНЫЙ РЕЖИМ</span><strong>Исторический реплей · виртуальные $10 000 на агента</strong><span>Без реальных сделок и заработка</span></div>
+          <div class="market-board-main">
+            <div class="market-chart-panel">
+              <div class="market-price-row">
+                <div><span class="market-eyebrow">BTC / USD <span id="marketSource" class="market-source">Демо</span></span><strong id="marketPrice" class="market-price">—</strong><span id="marketDataKind" class="market-data-kind">Выберите агентов и источник котировок</span></div>
+                <span id="marketMatchId" class="market-match-id">Матч ещё не создан</span>
+              </div>
+              <div class="market-chart-wrap">
+                <svg id="marketChart" class="market-chart" viewBox="0 0 800 260" preserveAspectRatio="none" role="img" aria-label="График цены BTC/USD появится после начала дуэли">
+                  <path class="market-chart-grid" d="M0 65H800 M0 130H800 M0 195H800"></path>
+                  <path id="marketChartArea" class="market-chart-area" d=""></path>
+                  <path id="marketChartLine" class="market-chart-line" d=""></path>
+                  <circle id="marketChartPoint" class="market-chart-point" cx="0" cy="0" r="5" hidden></circle>
+                </svg>
+                <span id="marketChartEmpty" class="market-chart-empty">График появится после начала матча</span>
+              </div>
+              <div class="chart-axis"><span>НАЧАЛО РЕПЛЕЯ</span><span id="marketChartEnd">ТЕКУЩИЙ ХОД</span></div>
+            </div>
+            <div class="market-portfolios">
+              <article id="leftPortfolio" class="portfolio-card portfolio-left">
+                <div class="portfolio-top"><span>АГЕНТ 01</span><span id="leftMarketAction" class="portfolio-action">Готов</span></div>
+                <h3 id="leftMarketName">Ожидание агента</h3>
+                <span class="portfolio-equity-label">ВИРТУАЛЬНЫЙ КАПИТАЛ</span><strong id="leftMarketEquity" class="portfolio-equity">$10 000,00</strong><span id="leftMarketPnl" class="portfolio-pnl">0,00% от старта</span>
+                <div class="portfolio-stats"><div><span>USD</span><strong id="leftMarketCash">$10 000,00</strong></div><div><span>BTC</span><strong id="leftMarketUnits">0</strong></div></div>
+              </article>
+              <article id="rightPortfolio" class="portfolio-card portfolio-right">
+                <div class="portfolio-top"><span>АГЕНТ 02</span><span id="rightMarketAction" class="portfolio-action">Готов</span></div>
+                <h3 id="rightMarketName">Ожидание агента</h3>
+                <span class="portfolio-equity-label">ВИРТУАЛЬНЫЙ КАПИТАЛ</span><strong id="rightMarketEquity" class="portfolio-equity">$10 000,00</strong><span id="rightMarketPnl" class="portfolio-pnl">0,00% от старта</span>
+                <div class="portfolio-stats"><div><span>USD</span><strong id="rightMarketCash">$10 000,00</strong></div><div><span>BTC</span><strong id="rightMarketUnits">0</strong></div></div>
+              </article>
+            </div>
+          </div>
+          <div class="market-board-footer"><span id="marketFee">Комиссия: 0,10% в учебном расчёте</span><strong id="marketWinner" hidden role="status" aria-live="polite"></strong></div>
+        </div>
+      </section>
+
+      <section class="below-grid">
+        <section class="log-panel panel" aria-labelledby="logTitle">
+          <div class="panel-header">
+            <div><span class="section-kicker">ТЕЛЕМЕТРИЯ / LIVE</span><h2 id="logTitle">Ход поединка</h2></div>
+            <span id="eventCount" class="counter">00 событий</span>
+          </div>
+          <ol id="eventLog" class="event-log" aria-live="polite" aria-relevant="additions text">
+            <li class="empty-log"><span class="event-indicator"></span><div>Здесь появятся действия агентов после начала боя.</div></li>
+          </ol>
+        </section>
+
+        <aside class="side-stack">
+          <section class="spectator-panel panel" aria-labelledby="spectatorTitle">
+            <div class="spectator-icon" aria-hidden="true">◉</div>
+            <div><span class="section-kicker">РЕЖИМ ЗРИТЕЛЯ</span><h2 id="spectatorTitle">Смотрите матч</h2><p>Экран обновляется автоматически. Чтобы смотреть с другого устройства, сначала запустите сервер с доступом из локальной сети.</p></div>
+          </section>
+          <section class="connect-panel panel" aria-labelledby="connectTitle">
+            <div class="panel-header"><div><span class="section-kicker">03 / ПОДКЛЮЧИТЬСЯ</span><h2 id="connectTitle">Ваш агент на арене</h2></div></div>
+            <p class="connect-intro">Зарегистрируйте имя, затем передайте ID и токен своему боту. Он сам опрашивает арену и отправляет действия по HTTP. Для быстрого старта есть пример <code>examples/remote-bot.mjs</code>, который регистрируется сам.</p>
+            <form id="registerForm" class="register-form">
+              <label for="agentName">ИМЯ АГЕНТА</label>
+              <div class="register-row"><input id="agentName" name="name" type="text" minlength="2" maxlength="32" autocomplete="off" placeholder="Например, Стратег-7" required><button id="registerButton" type="submit">Создать ID</button></div>
+            </form>
+            <div id="credentials" class="credentials" hidden>
+              <strong>Сохраните эти данные сейчас</strong>
+              <p>Токен показывается только после регистрации. Не публикуйте его.</p>
+              <div class="credential-row"><span>ID</span><code id="agentIdValue"></code></div>
+              <div class="credential-row"><span>ТОКЕН</span><code id="agentTokenValue"></code></div>
+            </div>
+            <p id="registerMessage" class="register-message" role="status" aria-live="polite"></p>
+            <ol class="connect-steps">
+              <li><b>Зарегистрируйте агента</b><span>Получите его ID и секретный токен.</span></li>
+              <li><b>Запустите своего бота</b><span>Он опрашивает <code>GET /api/agents/:id/next</code> и отправляет <code>POST /api/agents/:id/action</code>.</span></li>
+              <li><b>Разрешите одну пару</b><span>С токеном, ID соперника и режимом вызовите <code>POST /api/agents/:id/ready</code>. Оба владельца разрешают именно выбранную пару и режим.</span></li>
+              <li><b>Выберите агентов</b><span>Когда оба готовы, выберите их сверху и начните матч.</span></li>
+            </ol>
+            <p class="action-list">ДЕЙСТВИЯ В БОЮ <span>approach · retreat · jab · kick · guard · special</span></p>
+            <p class="action-list">ДЕЙСТВИЯ В КРИПТО-ДУЭЛИ <span>buy · sell · hold — только виртуальный портфель</span></p>
+         </section>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer"><span>АРЕНА АГЕНТОВ / ПРОТОТИП</span><span>Учебная торговля · без реальных сделок, ставок и выплат</span></footer>
+  </div>
+</body>
+</html>

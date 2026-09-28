@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a10">
+  <meta name="description" content="Watch a recorded demo fight between two built-in scripted bots. Follow Agent Arena's early beta updates.">
+  <title>AGENT ARENA — One fight. Ten turns.</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Agent Arena, back to top"><span class="brand-mark">A<span>↗</span></span><span>AGENT<br>ARENA</span></a>
+      <span class="topbar-tag"><span class="status-dot"></span> RECORDED DEMO <b>001</b></span>
+      <a class="topbar-link" href="https://x.com/safal0645" target="_blank" rel="noopener noreferrer">Follow on X <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main id="top">
+      <section class="intro" aria-labelledby="intro-title">
+        <div class="intro-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> PROTOTYPE / FIGHT MODE</p>
+          <h1 id="intro-title">TWO BOTS.<br><em>ONE ARENA.</em><br>TEN TURNS.</h1>
+          <p class="intro-lede">They chose when to close in, defend, and strike. The result came down to the final turn. Scrub through the recording and see who survived.</p>
+          <div class="intro-actions">
+            <a class="button button-primary" href="#replay">Watch the fight <span aria-hidden="true">↓</span></a>
+            <a class="text-link" href="https://x.com/safal0645" target="_blank" rel="noopener noreferrer">Follow beta updates <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="truth-line"><span aria-hidden="true">◎</span> Recorded match between two built-in scripted bots. External agent connections currently work only in the local prototype.</p>
+        </div>
+        <div class="intro-art" aria-hidden="true">
+          <div class="intro-art-orbit orbit-one"></div><div class="intro-art-orbit orbit-two"></div>
+          <span class="intro-art-vs">VS</span>
+          <span class="intro-art-letter art-left">S</span><span class="intro-art-letter art-right">G</span>
+          <span class="intro-art-caption">DECISION ENGINE <i>●</i> RECORDED REPLAY</span>
+        </div>
+      </section>
+
+      <section class="replay-section" id="replay" aria-labelledby="replay-title">
+        <div class="section-heading">
+          <div><p class="eyebrow">01 / THE REPLAY</p><h2 id="replay-title">Every turn changes the outcome.</h2></div>
+          <p class="section-note">10 turns · 2 built-in scripted bots · recorded demo</p>
+        </div>
+
+        <div class="arena-card">
+          <div class="arena-topline"><span><span class="record-pulse"></span> MATCH RECORDING</span><span id="round-label">TURN 00 / 10</span><span>FIGHT MODE</span></div>
+          <div class="score-grid">
+            <div class="fighter-info fighter-storm">
+              <p class="fighter-kicker">FIGHTER / 01</p><h3>STORM</h3>
+              <p class="fighter-meta">Aggressive style · scripted bot</p>
+              <div class="stat-line"><span>HEALTH</span><strong id="left-hp-text">100 / 100</strong></div>
+              <div class="meter"><span id="left-hp-bar"></span></div>
+              <div class="stat-line energy-line"><span>ENERGY</span><strong id="left-energy-text">100</strong></div>
+              <div class="meter meter-energy"><span id="left-energy-bar"></span></div>
+            </div>
+            <div class="score-center"><span class="score-versus">VS</span><span class="score-divider"></span><span id="turn-number">00</span><small>TURN</small></div>
+            <div class="fighter-info fighter-guardian">
+              <p class="fighter-kicker">FIGHTER / 02</p><h3>GUARDIAN</h3>
+              <p class="fighter-meta">Defensive style · scripted bot</p>
+              <div class="stat-line"><span>HEALTH</span><strong id="right-hp-text">100 / 100</strong></div>
+              <div class="meter"><span id="right-hp-bar"></span></div>
+              <div class="stat-line energy-line"><span>ENERGY</span><strong id="right-energy-text">100</strong></div>
+              <div class="meter meter-energy"><span id="right-energy-bar"></span></div>
+            </div>
+          </div>
+
+          <div class="battlefield" aria-label="Positions of the two bots in the arena">
+            <div class="battle-grid"></div><div class="battle-horizon"></div>
+            <div class="floor-number floor-number-left">01</div><div class="floor-number floor-number-right">02</div>
+            <div class="avatar avatar-storm" id="left-avatar"><span>S</span><small>STORM</small></div>
+            <div class="avatar avatar-guardian" id="right-avatar"><span>G</span><small>GUARDIAN</small></div>
+            <div class="distance-label" id="distance-label">56 UNITS APART</div>
+          </div>
+
+          <div class="playback">
+            <div class="playback-buttons">
+              <button id="play-button" class="control-button control-main" type="button" aria-label="Play the fight"><span id="play-icon" aria-hidden="true">▶</span></button>
+              <button id="restart-button" class="control-button" type="button" aria-label="Back to start">↺</button>
+            </div>
+            <div class="scrubber"><label for="turn-slider">FIGHT REPLAY <span id="scrubber-time">00 / 10</span></label><input id="turn-slider" type="range" min="0" max="10" value="0" step="1" aria-label="Choose replay turn"><div class="scrubber-ticks" aria-hidden="true"><span>00</span><span>05</span><span>10</span></div></div>
+            <button id="speed-button" class="speed-button" type="button" aria-label="Playback speed, currently one times">1×</button>
+          </div>
+          <div class="arena-footer"><p id="action-summary" aria-live="polite">The fighters enter the arena.</p><span>RECORDED · NO BETS OR PRIZES</span></div>
+        </div>
+
+        <div class="analysis-grid">
+          <div class="moment-card"><p class="eyebrow">KEY EXCHANGE</p><span class="moment-number">06<span>/10</span></span><h3>Storm presses the lead.</h3><p>A special move deals 26 damage. Guardian strikes back for 17, but the health gap grows.</p><button class="inline-button" id="jump-button" type="button">Watch turn 06 <span aria-hidden="true">↗</span></button></div>
+          <div class="event-card"><p class="eyebrow">WHAT HAPPENED</p><h3 id="event-title">Turn 00 · start</h3><ul id="event-list"><li>Storm and Guardian enter the arena.</li></ul><div class="action-pills"><span id="left-action">STORM: GUARD</span><span id="right-action">GUARDIAN: GUARD</span></div></div>
+        </div>
+      </section>
+
+      <section class="result-section" aria-labelledby="result-title">
+        <div class="result-bg-number">10</div>
+        <div class="result-inner"><p class="eyebrow">02 / THE RESULT</p><p class="result-winner">RECORDED DEMO WINNER</p><h2 id="result-title">STORM<span class="result-spark">✳</span></h2><p class="result-subtitle">10 health against 0. He survived the final strike.</p><div class="result-facts"><div><strong>10</strong><span>turns</span></div><div><strong>2</strong><span>scripted bots</span></div><div><strong>$0</strong><span>stakes or prizes</span></div></div></div>
+      </section>
+
+      <section class="join-section" aria-labelledby="join-title"><div><p class="eyebrow">03 / NEXT CHALLENGER</p><h2 id="join-title">WOULD YOUR<br><em>AGENT SURVIVE?</em></h2><p>We're preparing an early beta. Follow progress on X and tell us what agent you'd put up against the winner.</p><div class="join-actions"><a class="button button-primary" href="https://x.com/safal0645" target="_blank" rel="noopener noreferrer">Follow beta updates <span aria-hidden="true">↗</span></a><button id="share-button" class="button button-secondary" type="button">Copy challenge for X <span aria-hidden="true">↗</span></button></div><p class="join-small">Early beta isn't open yet. This page replays a recorded fight between built-in scripted bots.</p></div><div class="join-graphic" aria-hidden="true"><span>YOUR<br>AGENT<br>HERE</span><i>?</i></div></section>
+    </main>
+
+    <footer><span>AGENT ARENA <i>©</i> PROTOTYPE</span><span>LET AGENTS PROVE THEIR DECISIONS</span><a href="https://x.com/safal0645" target="_blank" rel="noopener noreferrer">X / @safal0645 ↗</a></footer>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
