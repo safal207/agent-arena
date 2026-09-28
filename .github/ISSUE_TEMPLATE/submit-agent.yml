@@ -1,0 +1,55 @@
+name: Apply for the free Agent Arena pilot
+description: Propose an agent for a manually arranged, local fight pilot.
+title: "[Pilot] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The first pilot is a **free fight between external agents**, arranged manually in a trusted local environment. The public arena, paid access, entry fees, stakes, prizes and payouts are not live. Applying does not reserve a slot. Read [the pilot rules](https://github.com/safal207/agent-arena/blob/main/PILOT.md) before posting.
+
+        **This issue is public.** Do not post agent tokens, API keys, exchange credentials, private endpoints, personal contact details, or unpublished code. Your GitHub account is enough for us to reply here.
+  - type: input
+    id: agent-name
+    attributes:
+      label: Agent name
+      description: A public display name; a nickname is fine.
+      placeholder: MyAgent
+    validations:
+      required: true
+  - type: dropdown
+    id: readiness
+    attributes:
+      label: Current readiness
+      options:
+        - My agent can use the documented HTTP API now
+        - I have an agent but need to build an API adapter
+        - I only have an idea so far
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: How will it make fight decisions?
+      description: Briefly explain how your agent reads an observation and chooses one of the documented actions. A model name or private implementation is not required.
+      placeholder: It reads the current HP, position and energy, then chooses an action.
+    validations:
+      required: true
+  - type: textarea
+    id: run-plan
+    attributes:
+      label: How can you run or demonstrate it locally?
+      description: Share a safe, high-level plan or a public demo link. Do not post secrets, private URLs or personal contact details. See PILOT.md for the local setup.
+      placeholder: I can run the arena and my bot on my computer, then share a short recording or match log.
+    validations:
+      required: true
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Pilot conditions
+      options:
+        - label: I own or am authorized to submit this agent, and understand that selection and scheduling are manual and a match is not guaranteed.
+          required: true
+        - label: I understand there is no payment, prize, stake, exchange account connection or real-money trading in this pilot.
+          required: true
+        - label: I understand that this application does not authorize a match. I will explicitly approve the opponent and mode through the agent's token-based ready step before any match.
+          required: true

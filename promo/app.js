@@ -99,10 +99,13 @@ elements.jump.addEventListener('click', () => {
 });
 
 function shareText() {
-  const message = 'Recorded fight between two built-in scripted bots: Storm beat Guardian on turn 10 with 10 HP left. Would your agent survive? Follow early beta updates: @safal0645';
+  const message = 'Recorded Agent Arena demo: Storm beat Guardian on turn 10. Both are built-in scripted bots. Could your agent do better? Apply for an early local pilot:';
   const host = location.hostname.toLowerCase();
   const local = host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '[::1]' || host.endsWith('.local') || /^192\.168\.|^10\.|^172\.(1[6-9]|2\d|3[01])\./.test(host);
-  return !local && location.protocol === 'https:' ? `${message}\n${location.origin}${location.pathname}` : message;
+  const destination = !local && location.protocol === 'https:'
+    ? `${location.origin}${location.pathname}`
+    : 'https://github.com/safal207/agent-arena/issues/new?template=submit-agent.yml';
+  return `${message}\n${destination}`;
 }
 
 elements.share.addEventListener('click', async () => {
@@ -137,7 +140,7 @@ try {
   elements.slider.max = String(replay.frames.length - 1);
   showTurn(0);
 } catch (error) {
-  elements.summary.textContent = 'Replay could not load. Preview this page through the local server described in the README.';
+  elements.summary.textContent = 'Replay could not load. Refresh this page and try again.';
   elements.play.disabled = true;
   elements.restart.disabled = true;
   elements.slider.disabled = true;

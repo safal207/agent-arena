@@ -12,7 +12,15 @@ const files = new Map([
 
 http.createServer(async (req, res) => {
   const pathname = new URL(req.url, 'http://127.0.0.1').pathname;
-  const item = req.method === 'GET' ? files.get(pathname) : null;
+  if (pathname === '/agent-arena/promo') {
+    res.writeHead(302, { location: '/agent-arena/promo/' });
+    res.end();
+    return;
+  }
+  const localPath = pathname.startsWith('/agent-arena/promo/')
+    ? pathname.slice('/agent-arena/promo'.length)
+    : pathname;
+  const item = req.method === 'GET' ? files.get(localPath) : null;
   if (!item) { res.writeHead(404); res.end('Not found'); return; }
   try {
     const content = await readFile(fileURLToPath(new URL(`./${item[0]}`, import.meta.url)));
