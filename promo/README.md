@@ -23,7 +23,7 @@ node --test
 
 Publish `index.html`, `style.css`, `app.js`, `replay.json` and `media/agent-arena-x-card.png` together. With GitHub Pages publishing the repository's main branch root, the public route is `https://safal207.github.io/agent-arena/promo/`. Runtime assets use relative paths. The canonical URL and social-image URL intentionally identify the public page.
 
-Replay controls support play/pause, restart, speed, slider and a jump to turn six. `?turn=6#replay` opens a specific recorded turn; invalid values use turn zero and out-of-range numeric values clamp to the recording. “Copy a link to this turn” shares that URL. On local/non-HTTPS origins, share buttons use the public promo address, never the local address. Copy actions show a visible selectable fallback if clipboard access fails, and retain usable focus after legacy copy succeeds. No share button publishes a post.
+Replay controls support play/pause, restart, speed, slider and a jump to turn six. `?turn=6#replay` opens a specific recorded turn; invalid values use turn zero and out-of-range numeric values clamp to the recording. “Copy a link to this turn” shares that URL. On local/non-HTTPS origins, share buttons use the public promo address, never the local address. Copy actions show a visible selectable fallback if clipboard access fails, retain usable focus after legacy copy succeeds, and restore their original label even after repeated clicks. No share button publishes a post.
 
 ## What the page can claim
 

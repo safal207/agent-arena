@@ -138,11 +138,13 @@ async function copyText(message, success) {
 }
 
 for (const button of document.querySelectorAll('[data-copy]')) {
+  const original = button.textContent;
+  let resetTimer;
   button.addEventListener('click', async () => {
-    const original = button.textContent;
     if (await copyText($(button.dataset.copy).textContent, `${original.replace('Copy', '').trim()} copied.`)) {
       button.textContent = 'Copied ✓';
-      setTimeout(() => { button.textContent = original; }, 2800);
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { button.textContent = original; }, 2800);
     }
   });
 }
@@ -172,8 +174,9 @@ try {
   }
   elements.slider.max = String(replay.frames.length - 1);
   const requestedTurn = new URLSearchParams(location.search).get('turn');
-  const initialTurn = requestedTurn !== null && /^\d+$/.test(requestedTurn) ? Number(requestedTurn) : 0;
-  showTurn(Number.isSafeInteger(initialTurn) ? initialTurn : 0);
+  const initialTurn = requestedTurn !== null && /^\d+$/.test(requestedTurn)
+    ? Math.min(Number(requestedTurn), replay.frames.length - 1) : 0;
+  showTurn(initialTurn);
 } catch (error) {
   elements.summary.textContent = 'Replay could not load. Refresh this page and try again.';
   elements.play.disabled = true;

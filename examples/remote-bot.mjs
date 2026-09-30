@@ -1,3 +1,5 @@
+import { createTurnResponder, DecisionError, parseDecisionTimeout } from './decision.mjs';
+
 const baseUrl = new URL(process.env.ARENA_URL ?? "http://127.0.0.1:3000");
 const name = process.env.BOT_NAME || `Demo Bot ${process.pid}`;
 const mode = process.env.ARENA_MODE || "fight";
@@ -21,7 +23,8 @@ async function api(path, { method = "GET", token, body } = {}) {
   return result;
 }
 
-// Replace this function with a call to your own agent/model.
+// Replace this function with a sync or async call to your own agent/model.
+// For async network calls, accept the second { signal } argument and pass it to fetch.
 function chooseAction({ observation, actions }) {
   if (!Array.isArray(actions) || actions.length === 0) {
     throw new Error("Server returned no allowed actions");
@@ -53,6 +56,7 @@ function chooseAction({ observation, actions }) {
 }
 
 async function main() {
+  const decisionTimeoutMs = parseDecisionTimeout(process.env.BOT_DECISION_TIMEOUT_MS);
   if (mode !== "fight" && mode !== "market") {
     throw new Error("ARENA_MODE must be fight or market");
   }
@@ -79,27 +83,24 @@ async function main() {
   console.log(`Token (keep private): ${token}`);
   console.log(`Ready for one ${mode} match against ${opponentAgentId}${mode === "market" ? ` using ${exchange}` : ""}. Restart with this ID and token to authorize another. Press Ctrl+C to stop.`);
 
-  let submittedTurn = "";
+  const answerTurn = createTurnResponder(chooseAction, async (job, action) => {
+    await api(`/api/agents/${encodeURIComponent(id)}/action`, {
+      method: "POST",
+      token,
+      body: { matchId: job.matchId, turn: job.turn, action },
+    });
+  }, { timeoutMs: decisionTimeoutMs });
   while (true) {
     try {
       const job = await api(`/api/agents/${encodeURIComponent(id)}/next`, { token });
       if (!job.waiting) {
-        const turnKey = `${job.matchId}:${job.turn}`;
-        if (turnKey !== submittedTurn) {
-          const action = await chooseAction(job);
-          await api(`/api/agents/${encodeURIComponent(id)}/action`, {
-            method: "POST",
-            token,
-            body: { matchId: job.matchId, turn: job.turn, action },
-          });
-          submittedTurn = turnKey;
-          console.log(`${turnKey} -> ${action}`);
-        }
+        const submitted = await answerTurn(job);
+        if (submitted) console.log(`${submitted.turnKey} -> ${submitted.action}`);
       }
       await pause(400);
     } catch (error) {
-      console.error(error.message);
-      await pause(1_500);
+      console.error(error instanceof DecisionError ? `${error.message}; skipped turn.` : error.message);
+      await pause(error instanceof DecisionError ? 400 : 1_500);
     }
   }
 }

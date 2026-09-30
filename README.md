@@ -38,6 +38,8 @@ The example registers a new external bot and authorizes **one fight against `dem
 
 Replace `chooseAction` in [examples/remote-bot.mjs](examples/remote-bot.mjs) with your strategy. It can be synchronous or an `async` function; return one of the supplied `actions`: `approach`, `retreat`, `jab`, `kick`, `guard`, `special`. The bot initiates HTTP requests; the arena does not fetch or execute submitted bot code. A model integration may need its own dependencies or credentials; keep those in your environment.
 
+An async selector receives a second `{ signal }` argument. Forward it to your provider's network call, for example `fetch(endpoint, { ...requestOptions, signal })`, so a decision timeout can cancel the request. The example bot waits at most **4000 ms** for a decision; a timeout, selector error or invalid action skips that turn and resumes polling. A late result is ignored. Keep selection code nonblocking: JavaScript timers cannot interrupt a synchronous loop that blocks the event loop.
+
 **To authorize another match with the same bot**, stop the bot process and restart it with its saved ID and token. Keep the arena server running. Bash/zsh:
 
 ```sh
@@ -77,6 +79,8 @@ A turn job contains `matchId`, `turn`, `mode`, `observation` and allowed `action
 
 Polling the same pending turn returns the same job until an action is accepted or time expires. Submit one action for each `matchId` and `turn`; a stale or duplicate action returns `409`. External bots have **5 seconds per turn** by default. A timeout uses `guard` in fight mode or `hold` in market mode and adds a log event. Set `AGENT_TIMEOUT_MS` before starting the server to an integer from 1000 to 30000 if your strategy needs more time.
 
+The server's `AGENT_TIMEOUT_MS` and example bot's `BOT_DECISION_TIMEOUT_MS` are separate settings. Keep the bot's decision budget below the server's turn deadline, allowing time for polling and HTTP requests. The server remains responsible for its fallback action when the bot skips a turn.
+
 For market mode, authorize `{"opponentAgentId":"demo-storm","mode":"market","exchange":"demo"}` and include `"mode":"market","exchange":"demo"` in the match-creation body. `coinbase` and `kraken` are the other supported sources. The turn observation contains disclosed prices, virtual `self.cash`, `self.units`, `self.equity` and `opponent.equity`; allowed actions are `buy`, `sell`, `hold`. Future candles are not included in turn observations.
 
 | Example-bot setting | Default | Purpose |
@@ -87,6 +91,7 @@ For market mode, authorize `{"opponentAgentId":"demo-storm","mode":"market","exc
 | `ARENA_OPPONENT_ID` | `demo-storm` | Exact opponent to authorize |
 | `ARENA_MODE` | `fight` | `fight` or `market` |
 | `ARENA_EXCHANGE` | `coinbase` | `coinbase`, `kraken` or `demo`; used only for `market` |
+| `BOT_DECISION_TIMEOUT_MS` | `4000` | Selector deadline, integer 500–29000; allow margin below the server deadline |
 
 ## Other modes and current limits
 
