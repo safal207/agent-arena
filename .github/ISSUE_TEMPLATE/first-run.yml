@@ -1,0 +1,67 @@
+name: First run — success or blocker
+description: Tell us whether you completed a local match and where setup could improve.
+title: "[First run] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying Agent Arena. Successful runs and small, reproducible blockers are both useful.
+
+        **This issue is public.** Do not include agent tokens, API keys, private endpoints, personal contact details or unpublished code. If you paste a terminal excerpt, redact secrets first. We do not need your bot's source or model name.
+  - type: dropdown
+    id: reached-step
+    attributes:
+      label: Furthest step completed
+      options:
+        - Watched the recorded web demo only
+        - Started the local server
+        - Finished a fight between the built-in bots
+        - Finished a fight with the example external bot
+        - Finished a fight with my own bot adapter
+        - Could not start the local server
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS and Node.js version for a local run; browser and device for web-demo-only feedback. No hostnames or private URLs.
+      placeholder: Windows 11, Node.js 22 / or Android, Chrome
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What happened?
+      description: One short paragraph. For a successful run, tell us which setup step was least clear. For a blocker, give the expected and actual behavior.
+      placeholder: I finished the example-bot fight. I was unsure which opponent to choose in the interface.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction or redacted error (optional)
+      description: Up to 5 steps or about 20 lines of redacted output. Do not paste a full terminal session; the example bot prints its secret token.
+      placeholder: |
+        1. Run node server.mjs
+        2. Run node examples/remote-bot.mjs in a second terminal
+        3. Select my bot and Storm
+        Expected: ...
+        Actual: ...
+  - type: dropdown
+    id: next-use
+    attributes:
+      label: What would make you use it again? (optional)
+      options:
+        - A clearer bot-connection walkthrough
+        - A match against another builder's bot
+        - Better match logs or saved replays
+        - A specific adapter or integration
+        - I would use the current version again
+  - type: checkboxes
+    id: public-feedback
+    attributes:
+      label: Public feedback
+      options:
+        - label: I checked my report and attachments for tokens, keys, private URLs and personal details.
+          required: true

@@ -1,122 +1,117 @@
 # Agent Arena
 
-Локальный прототип арены: два подключённых бота соревнуются через HTTP API. Есть игровой бой и учебная крипто-дуэль. Ботом может быть скрипт или агент с любой моделью, если он умеет получать наблюдение и отправлять одно действие на ход.
+[![Checks](https://github.com/safal207/agent-arena/actions/workflows/checks.yml/badge.svg)](https://github.com/safal207/agent-arena/actions/workflows/checks.yml)
 
-**Бесплатный пилот для авторов агентов:** [условия и заявка](PILOT.md). Первый тест посвящён бою двух внешних агентов в доверенной локальной среде; участие подбирается вручную.
+**A local, turn-based playground for bots that read an observation and choose an action over HTTP.** Run a fight, inspect HP, energy and actions, then replace the example strategy with your own code or model.
 
-## Запуск
+[Watch the recorded demo](https://safal207.github.io/agent-arena/promo/) · [Run locally](#run-locally) · [Connect your bot](#connect-your-bot) · [Русская документация](README.ru.md)
 
-Нужен Node.js 20 или новее. Внешних зависимостей нет; `npm` не требуется.
+[![Agent Arena: Storm versus Guardian](promo/media/agent-arena-x-card.png)](https://safal207.github.io/agent-arena/promo/)
 
-```powershell
+The web demo replays a recorded fight between **two built-in scripted bots**. It is not a public match server or evidence of external AI agents competing. The local prototype supports externally controlled bots; their strategy can be code, a model call or a combination.
+
+## Run locally
+
+Requires **Git and Node.js 20+**. The arena and built-in demo need **no packages, API keys or account**. These commands work in macOS/Linux terminals and Windows PowerShell:
+
+```sh
+git clone https://github.com/safal207/agent-arena.git
+cd agent-arena
 node server.mjs
 ```
 
-Если `npm` установлен, можно также запустить `npm start`.
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000), keep **Fight / Бой** selected, choose **Storm / Шторм** and **Guardian / Страж**, then click **Start fight / Начать бой**. The local interface currently uses Russian labels. The match should reach a visible result; the action log shows what happened each turn.
 
-Откройте [http://127.0.0.1:3000](http://127.0.0.1:3000). Можно сразу запустить игровой бой или учебную крипто-дуэль двух встроенных демо-ботов. По умолчанию арена доступна только на этом компьютере.
+The server binds to localhost by default. Stop it with `Ctrl+C`. State and agent credentials live in memory and reset when the server restarts.
 
-## Режимы
+<a id="подключение-ботов"></a>
 
-- **Бой:** агенты управляют бойцами действиями `approach`, `retreat`, `jab`, `kick`, `guard`, `special`.
-- **Крипто-дуэль:** агенты получают одну и ту же последовательность уже закрытых минутных свечей BTC/USD и выбирают `buy`, `sell` или `hold`. Источник выбирается перед запуском: публичные исторические данные Coinbase Exchange или Kraken либо явно обозначенные синтетические демо-данные. Это воспроизведение недавней истории, а не поток текущих котировок.
+## Connect your bot
 
-В крипто-дуэли каждый начинает с **$10 000 виртуальных USD** и без BTC. `buy` тратит 25% текущего виртуального остатка USD; `sell` продаёт 25% текущего виртуального остатка BTC; `hold` ничего не меняет. За покупку и продажу учитывается условная комиссия **0,1%**. После последней свечи побеждает агент с большей виртуальной стоимостью портфеля. Это учебные правила симулятора, а не реальные условия биржи или инвестиционный совет.
+Leave the server running. In a second terminal, from the repository root:
 
-Публичные источники описаны в документации [Coinbase Exchange Candles](https://docs.cdp.coinbase.com/api-reference/exchange-api/rest-api/products/get-product-candles) и [Kraken OHLC](https://docs.kraken.com/api-reference/market-data/get-ohlc-data). Для этих запросов не нужны учётная запись или API-ключи биржи. Код отправляет только запросы за рыночными данными: он не подключает счета, не размещает ордера и не переводит криптовалюту. Если выбранная биржа недоступна, запуск возвращает ошибку `503`; переключения на синтетические цены без вашего выбора нет.
-
-## Доступ в доверенной локальной сети (необязательно)
-
-Чтобы открыть арену устройствам своей локальной сети, запустите сервер так:
-
-```powershell
-$env:HOST = '0.0.0.0'
-node server.mjs
+```sh
+node examples/remote-bot.mjs
 ```
 
-На другом устройстве откройте `http://<IP_КОМПЬЮТЕРА>:3000`. Для бота на другом компьютере укажите тот же адрес:
+The example registers a new external bot and authorizes **one fight against `demo-storm`**. It prints the bot's ID and secret token locally, then polls for turns. Keep that terminal running. In the arena, choose the new bot on one side and **Storm / Шторм** on the other, keep **Fight / Бой** selected, and start the match. A successful first run ends with a visible result and action lines in the bot terminal.
 
-```powershell
-$env:ARENA_URL = 'http://<IP_КОМПЬЮТЕРА>:3000'
-node .\examples\remote-bot.mjs
+Replace `chooseAction` in [examples/remote-bot.mjs](examples/remote-bot.mjs) with your strategy. It can be synchronous or an `async` function; return one of the supplied `actions`: `approach`, `retreat`, `jab`, `kick`, `guard`, `special`. The bot initiates HTTP requests; the arena does not fetch or execute submitted bot code. A model integration may need its own dependencies or credentials; keep those in your environment.
+
+An async selector receives a second `{ signal }` argument. Forward it to your provider's network call, for example `fetch(endpoint, { ...requestOptions, signal })`, so a decision timeout can cancel the request. The example bot waits at most **4000 ms** for a decision; a timeout, selector error or invalid action skips that turn and resumes polling. A late result is ignored. Keep selection code nonblocking: JavaScript timers cannot interrupt a synchronous loop that blocks the event loop.
+
+**To authorize another match with the same bot**, stop the bot process and restart it with its saved ID and token. Keep the arena server running. Bash/zsh:
+
+```sh
+export ARENA_AGENT_ID='YOUR_AGENT_ID'
+export ARENA_AGENT_TOKEN='YOUR_PRIVATE_TOKEN'
+export ARENA_OPPONENT_ID='demo-storm'
+node examples/remote-bot.mjs
 ```
 
-Здесь используется обычный HTTP без шифрования. Регистрация и создание состязаний не требуют входа в систему, но владелец внешнего агента должен разрешить **один матч с конкретным соперником, режимом и, для крипто-дуэли, источником котировок** своим токеном. Состояние арены и токены хранятся только в памяти сервера до перезапуска. Используйте этот режим лишь в доверенной локальной сети. Не открывайте порт арены в публичный Интернет.
-
-## Подключение ботов
-
-В другом терминале из корня проекта:
+Windows PowerShell:
 
 ```powershell
-$env:BOT_NAME = "Альфа"
-node .\examples\remote-bot.mjs
+$env:ARENA_AGENT_ID = 'YOUR_AGENT_ID'
+$env:ARENA_AGENT_TOKEN = 'YOUR_PRIVATE_TOKEN'
+$env:ARENA_OPPONENT_ID = 'demo-storm'
+node examples/remote-bot.mjs
 ```
 
-Адрес сервера можно задать через переменную окружения `ARENA_URL` (по умолчанию `http://127.0.0.1:3000`). Бот выводит свой ID и секретный токен в терминал и опрашивает сервер примерно каждые 400 мс. Не публикуйте токен. Статус «подключён» означает, что агент опрашивал сервер в последние примерно 15 секунд. Пример разрешает **один** игровой бой против встроенного Шторма (`demo-storm`); после него владелец должен разрешить следующий.
+Never put tokens or API keys in issues, screenshots, recordings or commits. Redact the registration output before sharing a terminal excerpt. Saved credentials become invalid after an arena restart; clear both `ARENA_AGENT_ID` and `ARENA_AGENT_TOKEN` to register a fresh bot.
 
-Для учебной крипто-дуэли укажите режим перед запуском бота. Его примерная тактика нужна только для проверки протокола:
+For **two external bots**, register both first, then restart each with its saved credentials and the other bot's ID as `ARENA_OPPONENT_ID`. Both owners must authorize the same opponent and mode; for market mode, the market source must also match. Each authorization is consumed when that one match starts.
 
-```powershell
-$env:ARENA_MODE = "market"
-$env:ARENA_EXCHANGE = "demo"
-$env:ARENA_OPPONENT_ID = "demo-storm"
-node .\examples\remote-bot.mjs
-```
+## HTTP protocol
 
-`ARENA_EXCHANGE` принимает `coinbase`, `kraken` или `demo`; по умолчанию выбирается `coinbase`. В интерфейсе перед запуском выберите тот же источник, что разрешил владелец агента. Для обычного боя используется `ARENA_MODE=fight` (значение по умолчанию). Если повторно запускаете того же агента в другом режиме, задайте его `ARENA_AGENT_ID` и `ARENA_AGENT_TOKEN`. Разрешение на бой нельзя использовать для крипто-дуэли и наоборот; разрешение для одной биржи нельзя использовать для другой или для демо-данных.
+All requests use the local arena URL. JSON requests use `Content-Type: application/json`. Each external bot keeps its own registration token and sends `Authorization: Bearer TOKEN` on `ready`, `next` and `action`.
 
-Чтобы повторно использовать того же агента и разрешить ему ещё один бой, задайте его ID и токен перед запуском примера:
-
-```powershell
-$env:ARENA_AGENT_ID = "ID_АГЕНТА"
-$env:ARENA_AGENT_TOKEN = "ТОКЕН_АГЕНТА"
-$env:ARENA_OPPONENT_ID = "demo-storm"
-node .\examples\remote-bot.mjs
-```
-
-Для матча **двух внешних агентов** сначала зарегистрируйте обоих и запишите их ID и токены. Остановите оба процесса, затем запустите каждого повторно с его `ARENA_AGENT_ID`, `ARENA_AGENT_TOKEN` и `ARENA_OPPONENT_ID`, равным ID другого агента. Оба владельца должны указать одинаковый `ARENA_MODE`, а для крипто-дуэли — одинаковый `ARENA_EXCHANGE`. Каждый владелец таким образом разрешает именно эту пару и условия матча. Регистрация и токены сохраняются до перезапуска сервера; одновременно можно зарегистрировать не более 126 внешних агентов.
-
-Создайте бой в интерфейсе, выбрав двух ботов, либо укажите их ID через API:
-
-```powershell
-$body = @{ leftAgentId = "ID_АЛЬФЫ"; rightAgentId = "demo-storm" } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:3000/api/matches" -ContentType "application/json" -Body $body
-```
-
-Для крипто-дуэли выберите `exchange = "coinbase"`, `"kraken"` или `"demo"`:
-
-```powershell
-$body = @{ mode = "market"; exchange = "demo"; leftAgentId = "ID_АЛЬФЫ"; rightAgentId = "demo-storm" } | ConvertTo-Json
-Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:3000/api/matches" -ContentType "application/json" -Body $body
-```
-
-`demo` создаёт синтетические цены без обращения к бирже. Если `mode` не указан, создаётся обычный бой. Одновременно сервер проводит один матч.
-
-Текущее состояние: `GET http://127.0.0.1:3000/api/state`. В примере тактика находится в `chooseAction`: замените её вызовом собственной модели или программы. Бот сам обращается к арене. Сервер не запрашивает webhook и не исполняет код бота.
-
-## Протокол
-
-| Шаг | Запрос | Результат |
+| Step | Request | Result |
 | --- | --- | --- |
-| Регистрация | `POST /api/agents`, JSON `{"name":"Имя"}` | `{"id":"…","token":"…"}` |
-| Разрешить пару и условия | `POST /api/agents/:id/ready`, Bearer токен, JSON `{"opponentAgentId":"ID_СОПЕРНИКА","mode":"market","exchange":"demo"}` | `{"ok":true,"ready":true}` |
-| Получение хода | `GET /api/agents/:id/next`, заголовок `Authorization: Bearer TOKEN` | `{"waiting":true}` или задание |
-| Действие | `POST /api/agents/:id/action`, тот же заголовок, JSON `{"matchId":"…","turn":1,"action":"jab"}` для боя или `"action":"buy"` для крипто-дуэли | `{"ok":true}` |
-| Состояние | `GET /api/state` | Боты и бои |
-| Новый матч | `POST /api/matches`, JSON с `leftAgentId`, `rightAgentId`, `mode` и, для крипто-дуэли, `exchange` | Созданный матч либо ошибка источника данных |
+| Register | `POST /api/agents`, `{"name":"MyBot"}` | `id`, secret `token`, polling hint `pollMs` |
+| Authorize one fight | `POST /api/agents/:id/ready`, `{"opponentAgentId":"demo-storm","mode":"fight"}` | `ready: true` and the authorized conditions |
+| Poll | `GET /api/agents/:id/next` | `{"waiting":true,"pollMs":400}` or a turn job |
+| Act | `POST /api/agents/:id/action`, `{"matchId":"…","turn":1,"action":"jab"}` | `{"ok":true}` if it matches the pending turn |
+| Start a fight | `POST /api/matches`, `{"leftAgentId":"YOUR_AGENT_ID","rightAgentId":"demo-storm","mode":"fight"}` | Match ID, mode and status |
+| Inspect | `GET /api/state` | Agents and the current match; tokens are omitted |
 
-Задание на ход содержит `matchId`, `turn`, `mode`, `observation` и `actions`. В игровом бою `observation` содержит `self` и `opponent` с `hp`, `x`, `energy`, а также `maxTurns` и `turn`; доступные действия: `approach`, `retreat`, `jab`, `kick`, `guard`, `special`. В крипто-дуэли наблюдение содержит текущую цену, последние уже раскрытые цены, `exchange`, `dataKind`, `self` (`cash`, `units`, `equity`), `opponent.equity`, `feeBps` и `tradeFraction`; действия: `buy`, `sell`, `hold`. Будущие свечи агенту во время матча не отправляются. Если ответ `{"waiting":true}`, повторите запрос после паузы. До принятия действия повторный `GET /next` возвращает то же задание. Не отправляйте действие повторно для того же `matchId` и `turn`.
+A turn job contains `matchId`, `turn`, `mode`, `observation` and allowed `actions`. In fight mode, `observation.self` and `observation.opponent` contain `hp`, `x` and `energy`; the observation also includes `turn` and `maxTurns`. Both fighters choose actions before the turn resolves. A fight ends on knockout or after at most 36 turns; remaining HP determines the result.
 
-У внешнего агента по умолчанию есть 5 секунд на ответ в каждом ходе. Если он не успеет, сервер выберет `guard` в игровом бою или `hold` в крипто-дуэли и запишет пропуск в журнал. Перед запуском сервера можно задать `AGENT_TIMEOUT_MS` от 1000 до 30000 миллисекунд.
+Polling the same pending turn returns the same job until an action is accepted or time expires. Submit one action for each `matchId` and `turn`; a stale or duplicate action returns `409`. External bots have **5 seconds per turn** by default. A timeout uses `guard` in fight mode or `hold` in market mode and adds a log event. Set `AGENT_TIMEOUT_MS` before starting the server to an integer from 1000 to 30000 if your strategy needs more time.
 
-## Доступ и награды в будущем (гипотеза)
+The server's `AGENT_TIMEOUT_MS` and example bot's `BOT_DECISION_TIMEOUT_MS` are separate settings. Keep the bot's decision budget below the server's turn deadline, allowing time for polling and HTTP requests. The server remains responsible for its fallback action when the bot skips a turn.
 
-Сейчас это локальный прототип: публичного входа участников, оплаты доступа, взносов, ставок, призов и выплат нет. Платный доступ к будущей арене для участников — гипотеза, которую ещё нужно проверить спросом; цена и условия не установлены.
+For market mode, authorize `{"opponentAgentId":"demo-storm","mode":"market","exchange":"demo"}` and include `"mode":"market","exchange":"demo"` in the match-creation body. `coinbase` and `kraken` are the other supported sources. The turn observation contains disclosed prices, virtual `self.cash`, `self.units`, `self.equity` and `opponent.equity`; allowed actions are `buy`, `sell`, `hold`. Future candles are not included in turn observations.
 
-Возможная отдельная модель наград: спонсор заранее финансирует приз турнира или платит создателям агентов за показ либо лицензию. Победный приз мог бы получить человек — владелец агента. Плата за доступ, если она появится, не должна автоматически считаться призовым фондом. Крипто-дуэль сейчас остаётся учебной симуляцией без реальных средств и наград.
+| Example-bot setting | Default | Purpose |
+| --- | --- | --- |
+| `ARENA_URL` | `http://127.0.0.1:3000` | Arena address |
+| `BOT_NAME` | `Demo Bot <process ID>` | Display name, 2–32 characters |
+| `ARENA_AGENT_ID`, `ARENA_AGENT_TOKEN` | Unset | Reuse an agent; set both or neither |
+| `ARENA_OPPONENT_ID` | `demo-storm` | Exact opponent to authorize |
+| `ARENA_MODE` | `fight` | `fight` or `market` |
+| `ARENA_EXCHANGE` | `coinbase` | `coinbase`, `kraken` or `demo`; used only for `market` |
+| `BOT_DECISION_TIMEOUT_MS` | `4000` | Selector deadline, integer 500–29000; allow margin below the server deadline |
 
-Перед турнирами с деньгами понадобятся опубликованные правила, защита от читерства, порядок выплат и проверка налоговых требований и применимых юрисдикций.
+## Other modes and current limits
 
-## Ограничения
+The optional **market** mode is an educational BTC/USD replay with virtual balances. It uses historical closed candles from Coinbase or Kraken, or explicitly selected synthetic `demo` prices. It does not connect exchange accounts, place real orders, or pay rewards. `demo` works without market-data requests. Historical sources can be unavailable; the server returns `503` rather than silently substituting synthetic prices. See [the detailed market rules](README.ru.md#режимы).
 
-Это игровая проверка механики. Денежных ставок, призов, платежей и выплат владельцам агентов здесь нет. Исторические биржевые свечи могут быть заранее известны агенту из внешнего источника, поэтому такой источник без дополнительных правил и проверок не годится для честного состязания с денежными призами. Результат учебной дуэли не показывает будущую доходность стратегии. Для публичного запуска и заработка потребуются отдельные решения по размещению сервера, защите API, правилам турниров, античиту, платежам и юридическим условиям.
+Only one match runs at a time. Agent state and the current match are in memory; the event log is bounded, so save any evidence you need before a restart. There is no hosted multiplayer arena, persistent leaderboard, general model benchmark, payment, entry fee, stake, prize or payout. Historical prices may be known to an external bot and cannot establish fair trading performance.
+
+Optional LAN access uses plain HTTP and unauthenticated registration/match creation. Use it only in a trusted local network; do not expose the server to the public Internet. See [LAN setup](README.ru.md#доступ-в-доверенной-локальной-сети-необязательно).
+
+## Help shape the next version
+
+The most useful feedback is whether you completed a first match and where you got stuck. [Report a first run](https://github.com/safal207/agent-arena/issues/new?template=first-run.yml) or read [CONTRIBUTING.md](CONTRIBUTING.md). For a manually coordinated fight between external agents, see the [free pilot](PILOT.md); applying does not guarantee a slot or authorize a match.
+
+If you want to follow the project, [star Agent Arena on GitHub](https://github.com/safal207/agent-arena). A star helps people discover the repository; a completed match and concrete feedback help us improve it.
+
+Run the existing checks without installing packages:
+
+```sh
+node --test
+node promo/verify.mjs
+```
+
+There is currently **no `LICENSE` file**. Public source visibility does not provide an open-source reuse license; licensing requires an explicit repository-owner decision. Resolve reuse/distribution permission with the owner before incorporating the code elsewhere.
