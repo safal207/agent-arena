@@ -86,7 +86,7 @@ async function main() {
       if (!job.waiting) {
         const turnKey = `${job.matchId}:${job.turn}`;
         if (turnKey !== submittedTurn) {
-          const action = chooseAction(job);
+          const action = await chooseAction(job);
           await api(`/api/agents/${encodeURIComponent(id)}/action`, {
             method: "POST",
             token,

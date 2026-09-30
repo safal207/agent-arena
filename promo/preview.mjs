@@ -8,6 +8,7 @@ const files = new Map([
   ['/style.css', ['style.css', 'text/css; charset=utf-8']],
   ['/app.js', ['app.js', 'text/javascript; charset=utf-8']],
   ['/replay.json', ['replay.json', 'application/json; charset=utf-8']],
+  ['/media/agent-arena-x-card.png', ['media/agent-arena-x-card.png', 'image/png']],
 ]);
 
 http.createServer(async (req, res) => {

@@ -1,7 +1,7 @@
 const $ = id => document.getElementById(id);
 const elements = {
   slider: $('turn-slider'), play: $('play-button'), icon: $('play-icon'), restart: $('restart-button'),
-  speed: $('speed-button'), jump: $('jump-button'), share: $('share-button'),
+  speed: $('speed-button'), jump: $('jump-button'), share: $('share-button'), shareTurn: $('share-turn-button'),
   round: $('round-label'), turn: $('turn-number'), time: $('scrubber-time'),
   leftHp: $('left-hp-text'), rightHp: $('right-hp-text'), leftBar: $('left-hp-bar'), rightBar: $('right-hp-bar'),
   leftEnergy: $('left-energy-text'), rightEnergy: $('right-energy-text'),
@@ -71,6 +71,8 @@ function showTurn(turn) {
   }));
   elements.summary.textContent = translateEvent(frame.events.find(message => message.includes('Победа:'))
     ?? frame.events[0] ?? 'Бойцы меняют позицию.');
+  $('replay-next-title').textContent = currentTurn === total ? 'Storm won. Your strategy is next.' : 'Can your strategy beat Storm?';
+  $('replay-next').classList.toggle('replay-complete', currentTurn === total);
   if (currentTurn === total) stop();
 }
 
@@ -95,38 +97,69 @@ elements.speed.addEventListener('click', () => {
 elements.jump.addEventListener('click', () => {
   stop();
   showTurn(6);
-  $('replay').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  $('replay').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' });
 });
 
-function shareText() {
-  const message = 'Recorded Agent Arena demo: Storm beat Guardian on turn 10. Both are built-in scripted bots. Could your agent do better? Apply for an early local pilot:';
+function shareUrl(turn) {
   const host = location.hostname.toLowerCase();
   const local = host === 'localhost' || host === '127.0.0.1' || host === '0.0.0.0' || host === '[::1]' || host.endsWith('.local') || /^192\.168\.|^10\.|^172\.(1[6-9]|2\d|3[01])\./.test(host);
   const destination = !local && location.protocol === 'https:'
     ? `${location.origin}${location.pathname}`
-    : 'https://github.com/safal207/agent-arena/issues/new?template=submit-agent.yml';
-  return `${message}\n${destination}`;
+    : 'https://safal207.github.io/agent-arena/promo/';
+  return turn === undefined ? destination : `${destination}?turn=${turn}#replay`;
 }
 
-elements.share.addEventListener('click', async () => {
-  const message = shareText();
+async function copyText(message, success) {
+  const fallback = $('copy-fallback');
+  const status = $('copy-status');
+  fallback.hidden = true;
   try {
     await navigator.clipboard.writeText(message);
   } catch {
-    const input = document.createElement('textarea');
+    // Keep a visible, selectable recovery path if clipboard access is blocked.
+    const previousFocus = document.activeElement;
+    const input = $('copy-fallback-text');
     input.value = message;
-    input.setAttribute('readonly', '');
-    input.style.position = 'fixed';
-    input.style.opacity = '0';
-    document.body.append(input);
+    fallback.hidden = false;
+    input.focus();
     input.select();
-    const copied = document.execCommand('copy');
-    input.remove();
-    if (!copied) { window.prompt('Copy this challenge for X:', message); return; }
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch { /* manual copy remains available */ }
+    if (!copied) {
+      status.textContent = 'Clipboard unavailable. Your text is selected below; copy it manually.';
+      input.scrollIntoView({ block: 'center' });
+      return false;
+    }
+    fallback.hidden = true;
+    previousFocus?.focus();
   }
-  const original = 'Copy challenge for X';
-  elements.share.firstChild.textContent = 'Challenge copied for X ';
-  setTimeout(() => { elements.share.firstChild.textContent = `${original} `; }, 2800);
+  status.textContent = success;
+  return true;
+}
+
+for (const button of document.querySelectorAll('[data-copy]')) {
+  button.addEventListener('click', async () => {
+    const original = button.textContent;
+    if (await copyText($(button.dataset.copy).textContent, `${original.replace('Copy', '').trim()} copied.`)) {
+      button.textContent = 'Copied ✓';
+      setTimeout(() => { button.textContent = original; }, 2800);
+    }
+  });
+}
+
+elements.share.addEventListener('click', async () => {
+  const message = `Can your bot beat Storm? Agent Arena is a local playground for agent decisions. Watch a real scripted-bot replay, run a match with Node.js, then change the strategy. No dependencies or model keys for the demo.\n${shareUrl()}`;
+  if (await copyText(message, 'Challenge copied. Paste it wherever you want to share it.')) {
+    elements.share.firstChild.textContent = 'Challenge copied for X ';
+    setTimeout(() => { elements.share.firstChild.textContent = 'Copy challenge for X '; }, 2800);
+  }
+});
+
+elements.shareTurn.addEventListener('click', async () => {
+  if (await copyText(shareUrl(currentTurn), `Link to turn ${currentTurn} copied.`)) {
+    elements.shareTurn.firstChild.textContent = 'Turn link copied ';
+    setTimeout(() => { elements.shareTurn.firstChild.textContent = 'Copy a link to this turn '; }, 2800);
+  }
 });
 
 try {
@@ -138,7 +171,9 @@ try {
     throw new Error('Unexpected replay fixture');
   }
   elements.slider.max = String(replay.frames.length - 1);
-  showTurn(0);
+  const requestedTurn = new URLSearchParams(location.search).get('turn');
+  const initialTurn = requestedTurn !== null && /^\d+$/.test(requestedTurn) ? Number(requestedTurn) : 0;
+  showTurn(Number.isSafeInteger(initialTurn) ? initialTurn : 0);
 } catch (error) {
   elements.summary.textContent = 'Replay could not load. Refresh this page and try again.';
   elements.play.disabled = true;
@@ -146,5 +181,6 @@ try {
   elements.slider.disabled = true;
   elements.speed.disabled = true;
   elements.jump.disabled = true;
+  elements.shareTurn.disabled = true;
   console.error('Replay loading failed:', error);
 }
