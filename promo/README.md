@@ -17,18 +17,28 @@ node promo/verify.mjs
 node --test
 ```
 
-`verify.mjs` checks all recorded turns against the fight engine. `capture.mjs` records a fresh fight using a separate ephemeral server and overwrites `replay.json`. The scripted choices are currently deterministic. The turn-zero frame is reconstructed using `createMatch`, because the server advances to turn one immediately after match creation; later frames come from `/api/state`.
+`verify.mjs` checks both recordings against the fight engine. For the HTTP-client recording, it also checks accepted decisions, observations, one-match authorization and SHA-256 hashes of the source files. `capture.mjs` records a fresh built-in fight using a separate ephemeral server and overwrites `replay.json`. Its turn-zero frame is reconstructed using `createMatch`; later frames come from `/api/state`.
+
+To recapture the two scripted HTTP clients through an isolated localhost server:
+
+```sh
+node examples/external-duel.mjs --output promo/external-replay.json
+node promo/verify.mjs
+```
+
+The client runner starts its own server in a worker, registers Rush and Sentinel, authorizes their exact pair for one fight, saves every resolved state and accepted HTTP decision, verifies the complete capture, then atomically writes the file. Tokens stay in memory and are omitted from the recording and CLI summary. Cleanup terminates the worker so match timers do not keep failed runs alive. Recapture if a recorded source file changes. The same runner controls both scripted clients; this evidence does not establish independent participants or model quality.
 
 ## Source and publication
 
-Publish `index.html`, `style.css`, `app.js`, `replay.json` and `media/agent-arena-x-card.png` together. With GitHub Pages publishing the repository's main branch root, the public route is `https://safal207.github.io/agent-arena/promo/`. Runtime assets use relative paths. The canonical URL and social-image URL intentionally identify the public page.
+Publish `index.html`, `style.css`, `app.js`, `replay.json`, `external-replay.json` and `media/agent-arena-x-card.png` together. With GitHub Pages publishing the repository's main branch root, the public route is `https://safal207.github.io/agent-arena/promo/`. Runtime assets use relative paths; CSS and JS are versioned `external-proof-1`. The canonical URL and social-image URL intentionally identify the public page.
 
-Replay controls support play/pause, restart, speed, slider and a jump to turn six. `?turn=6#replay` opens a specific recorded turn; invalid values use turn zero and out-of-range numeric values clamp to the recording. “Copy a link to this turn” shares that URL. On local/non-HTTPS origins, share buttons use the public promo address, never the local address. Copy actions show a visible selectable fallback if clipboard access fails, retain usable focus after legacy copy succeeds, and restore their original label even after repeated clicks. No share button publishes a post.
+Replay controls support recording selection, play/pause, restart, speed, slider and a jump to turn six. `?turn=6#replay` opens the built-in recording at turn six; `?replay=external&turn=6#replay` opens the HTTP-client recording. Invalid recording IDs select the built-in demo; invalid turns use zero and out-of-range numeric values clamp to the recording. “Copy a link to this turn” includes the selected recording. Switching stops playback; delayed responses cannot replace a newer choice, and failed loads hide stale frames and results. On local/non-HTTPS origins, share buttons use the public promo address, never the local address. Copy actions show a visible selectable fallback if clipboard access fails, retain usable focus after legacy copy succeeds, and restore their original label even after repeated clicks. No share button publishes a post.
 
 ## What the page can claim
 
-- The real recording contains 10 turns. Storm wins with 10 HP against Guardian's 0 HP.
-- Both recorded competitors are built-in **scripted** bots, not external AI agents. Original Russian names/events remain in `replay.json`; the page translates the fixed event text.
+- The built-in recording contains 10 turns. Storm wins with 10 HP against Guardian's 0 HP.
+- The second recording comes from two **scripted HTTP clients**, Rush and Sentinel, operated by one local runner. Its saved evidence contains observations and accepted actions for every turn; the page derives turns, winner, HP and fallback timeout count from that recording.
+- Both examples use scripted strategies and no model calls. Original Russian names/events remain in the JSON; the page translates the fixed event text.
 - The local prototype supports external bots over HTTP. The example authorizes one fight against Storm; model integrations can use asynchronous `chooseAction` and may require their own dependencies or credentials.
 - Self-serve local use needs no pilot application. The public page is a replay and documentation, not a hosted match server.
 - Pilot selection and scheduling are manual. Applying does not guarantee a match or authorize one.

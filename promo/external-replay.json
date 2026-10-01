@@ -1,0 +1,1059 @@
+{
+  "schemaVersion": 1,
+  "provenance": {
+    "kind": "single-runner-scripted-http-duel",
+    "description": "One local runner controls two named scripted HTTP clients. An unchanged createArenaServer runs in an isolated localhost worker; these are not independent owners or model-backed agents.",
+    "capturedAt": "2026-10-01T04:47:40.035Z",
+    "nodeVersion": "v24.19.0",
+    "modelCalls": 0,
+    "serverTimeoutMs": 5000,
+    "clientDecisionTimeoutMs": 4000,
+    "sourceHashes": {
+      "server.mjs": "6edb7608d75add202921dd56d2209e512a4bde56ede52f5d9365337b8f0d239d",
+      "engine.mjs": "2a583f6c23625bcc9d9830f42949b031fb5c1df9dcf3a0939e490dea6e0ac5ec",
+      "examples/decision.mjs": "80f5babee6b440242d10fd8a8fd6528bcbd0353437603a078385ae0b2ae1b1d6",
+      "examples/external-duel.mjs": "8d42dbe7b6e0ce52237c73ebe2061ae5d73c490915239cd5791009479cc459c5"
+    },
+    "nonClaims": [
+      "No independent community pilot",
+      "No model quality benchmark",
+      "No hosted public match server"
+    ]
+  },
+  "mode": "fight",
+  "agentTypes": [
+    "external",
+    "external"
+  ],
+  "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+  "maxTurns": 36,
+  "winnerAgentId": null,
+  "frames": [
+    {
+      "turn": 0,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 100,
+        "x": 22,
+        "energy": 100,
+        "action": "guard"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 100,
+        "x": 78,
+        "energy": 100,
+        "action": "guard"
+      },
+      "events": [
+        "Rush и Sentinel выходят на арену."
+      ]
+    },
+    {
+      "turn": 1,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 100,
+        "x": 31,
+        "energy": 100,
+        "action": "approach"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 100,
+        "x": 69,
+        "energy": 100,
+        "action": "approach"
+      },
+      "events": [
+        "Бойцы меняют позицию."
+      ]
+    },
+    {
+      "turn": 2,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 100,
+        "x": 40,
+        "energy": 100,
+        "action": "approach"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 100,
+        "x": 60,
+        "energy": 100,
+        "action": "approach"
+      },
+      "events": [
+        "Бойцы меняют позицию."
+      ]
+    },
+    {
+      "turn": 3,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 100,
+        "x": 40,
+        "energy": 75,
+        "action": "special"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 93,
+        "x": 60,
+        "energy": 100,
+        "action": "guard"
+      },
+      "events": [
+        "Rush: особый приём — блок, 7 урона."
+      ]
+    },
+    {
+      "turn": 4,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 83,
+        "x": 40,
+        "energy": 50,
+        "action": "special"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 67,
+        "x": 60,
+        "energy": 90,
+        "action": "kick"
+      },
+      "events": [
+        "Rush: особый приём — 26 урона.",
+        "Sentinel: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 5,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 66,
+        "x": 40,
+        "energy": 25,
+        "action": "special"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 41,
+        "x": 60,
+        "energy": 80,
+        "action": "kick"
+      },
+      "events": [
+        "Rush: особый приём — 26 урона.",
+        "Sentinel: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 6,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 66,
+        "x": 40,
+        "energy": 15,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 36,
+        "x": 60,
+        "energy": 98,
+        "action": "guard"
+      },
+      "events": [
+        "Rush: удар ногой — блок, 5 урона."
+      ]
+    },
+    {
+      "turn": 7,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 49,
+        "x": 49,
+        "energy": 24,
+        "action": "approach"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 36,
+        "x": 60,
+        "energy": 88,
+        "action": "kick"
+      },
+      "events": [
+        "Sentinel: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 8,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 32,
+        "x": 49,
+        "energy": 14,
+        "action": "kick"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 19,
+        "x": 60,
+        "energy": 78,
+        "action": "kick"
+      },
+      "events": [
+        "Rush: удар ногой — 17 урона.",
+        "Sentinel: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 9,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 32,
+        "x": 49,
+        "energy": 13,
+        "action": "jab"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 16,
+        "x": 60,
+        "energy": 96,
+        "action": "guard"
+      },
+      "events": [
+        "Rush: быстрый удар — блок, 3 урона."
+      ]
+    },
+    {
+      "turn": 10,
+      "status": "running",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 15,
+        "x": 49,
+        "energy": 12,
+        "action": "jab"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 5,
+        "x": 60,
+        "energy": 86,
+        "action": "kick"
+      },
+      "events": [
+        "Rush: быстрый удар — 11 урона.",
+        "Sentinel: удар ногой — 17 урона."
+      ]
+    },
+    {
+      "turn": 11,
+      "status": "finished",
+      "winnerAgentId": null,
+      "left": {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "hp": 0,
+        "x": 49,
+        "energy": 11,
+        "action": "jab"
+      },
+      "right": {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "hp": 0,
+        "x": 60,
+        "energy": 76,
+        "action": "kick"
+      },
+      "events": [
+        "Rush: быстрый удар — 11 урона.",
+        "Sentinel: удар ногой — 17 урона.",
+        "Ничья."
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 1,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 22,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 78,
+          "energy": 100
+        },
+        "turn": 1,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "approach",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 1,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 78,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 22,
+          "energy": 100
+        },
+        "turn": 1,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "approach",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 2,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 31,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 69,
+          "energy": 100
+        },
+        "turn": 2,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "approach",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 2,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 69,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 31,
+          "energy": 100
+        },
+        "turn": 2,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "approach",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 3,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 40,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 60,
+          "energy": 100
+        },
+        "turn": 3,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "special",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 3,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 60,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 40,
+          "energy": 100
+        },
+        "turn": 3,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "guard",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 4,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 100,
+          "x": 40,
+          "energy": 75
+        },
+        "opponent": {
+          "hp": 93,
+          "x": 60,
+          "energy": 100
+        },
+        "turn": 4,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "special",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 4,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 93,
+          "x": 60,
+          "energy": 100
+        },
+        "opponent": {
+          "hp": 100,
+          "x": 40,
+          "energy": 75
+        },
+        "turn": 4,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 5,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 83,
+          "x": 40,
+          "energy": 50
+        },
+        "opponent": {
+          "hp": 67,
+          "x": 60,
+          "energy": 90
+        },
+        "turn": 5,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "special",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 5,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 67,
+          "x": 60,
+          "energy": 90
+        },
+        "opponent": {
+          "hp": 83,
+          "x": 40,
+          "energy": 50
+        },
+        "turn": 5,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 6,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 66,
+          "x": 40,
+          "energy": 25
+        },
+        "opponent": {
+          "hp": 41,
+          "x": 60,
+          "energy": 80
+        },
+        "turn": 6,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 6,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 41,
+          "x": 60,
+          "energy": 80
+        },
+        "opponent": {
+          "hp": 66,
+          "x": 40,
+          "energy": 25
+        },
+        "turn": 6,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "guard",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 7,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 66,
+          "x": 40,
+          "energy": 15
+        },
+        "opponent": {
+          "hp": 36,
+          "x": 60,
+          "energy": 98
+        },
+        "turn": 7,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "approach",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 7,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 36,
+          "x": 60,
+          "energy": 98
+        },
+        "opponent": {
+          "hp": 66,
+          "x": 40,
+          "energy": 15
+        },
+        "turn": 7,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 8,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 49,
+          "x": 49,
+          "energy": 24
+        },
+        "opponent": {
+          "hp": 36,
+          "x": 60,
+          "energy": 88
+        },
+        "turn": 8,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 8,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 36,
+          "x": 60,
+          "energy": 88
+        },
+        "opponent": {
+          "hp": 49,
+          "x": 49,
+          "energy": 24
+        },
+        "turn": 8,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 9,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 32,
+          "x": 49,
+          "energy": 14
+        },
+        "opponent": {
+          "hp": 19,
+          "x": 60,
+          "energy": 78
+        },
+        "turn": 9,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "jab",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 9,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 19,
+          "x": 60,
+          "energy": 78
+        },
+        "opponent": {
+          "hp": 32,
+          "x": 49,
+          "energy": 14
+        },
+        "turn": 9,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "guard",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 10,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 32,
+          "x": 49,
+          "energy": 13
+        },
+        "opponent": {
+          "hp": 16,
+          "x": 60,
+          "energy": 96
+        },
+        "turn": 10,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "jab",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 10,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 16,
+          "x": 60,
+          "energy": 96
+        },
+        "opponent": {
+          "hp": 32,
+          "x": 49,
+          "energy": 13
+        },
+        "turn": 10,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "name": "Rush",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 11,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 15,
+          "x": 49,
+          "energy": 12
+        },
+        "opponent": {
+          "hp": 5,
+          "x": 60,
+          "energy": 86
+        },
+        "turn": 11,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "jab",
+      "accepted": true,
+      "statusCode": 200
+    },
+    {
+      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "name": "Sentinel",
+      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "turn": 11,
+      "mode": "fight",
+      "observation": {
+        "self": {
+          "hp": 5,
+          "x": 60,
+          "energy": 86
+        },
+        "opponent": {
+          "hp": 15,
+          "x": 49,
+          "energy": 12
+        },
+        "turn": 11,
+        "maxTurns": 36
+      },
+      "allowedActions": [
+        "approach",
+        "retreat",
+        "jab",
+        "kick",
+        "guard",
+        "special"
+      ],
+      "action": "kick",
+      "accepted": true,
+      "statusCode": 200
+    }
+  ],
+  "evidence": {
+    "acceptedActions": {
+      "Rush": 11,
+      "Sentinel": 11
+    },
+    "serverTimeoutCount": 0,
+    "decisionTimeoutCount": 0,
+    "authorization": [
+      {
+        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "name": "Rush",
+        "opponentAgentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "mode": "fight",
+        "granted": true,
+        "consumed": true
+      },
+      {
+        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "name": "Sentinel",
+        "opponentAgentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "mode": "fight",
+        "granted": true,
+        "consumed": true
+      }
+    ]
+  }
+}

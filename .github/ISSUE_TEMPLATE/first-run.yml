@@ -16,6 +16,7 @@ body:
         - Watched the recorded web demo only
         - Started the local server
         - Finished a fight between the built-in bots
+        - Finished the one-command duel between two scripted HTTP clients
         - Finished a fight with the example external bot
         - Finished a fight with my own bot adapter
         - Could not start the local server
