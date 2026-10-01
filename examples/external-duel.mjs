@@ -12,6 +12,56 @@ import { createTurnResponder } from './decision.mjs';
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const SOURCE_FILES = ['server.mjs', 'engine.mjs', 'examples/decision.mjs', 'examples/external-duel.mjs'];
+const PROVENANCE_DESCRIPTION = 'One local runner controls two named scripted HTTP clients. An unchanged createArenaServer runs in an isolated localhost worker; these are not independent owners or model-backed agents.';
+const NON_CLAIMS = ['No independent community pilot', 'No model quality benchmark', 'No hosted public match server'];
+const STAGES = new Set(['configuration', 'startup', 'registration', 'authorization', 'match', 'source-hashing', 'verification', 'output-write', 'output-commit', 'cleanup']);
+const SAFE_CODES = new Set(['INVALID_ARGUMENT', 'DEADLINE_EXCEEDED', 'ASSERTION_FAILED', 'INVALID_RESPONSE', 'NETWORK_ERROR', 'WORKER_ERROR', 'INTERNAL_ERROR',
+  'DECISION_TIMEOUT', 'DECISION_FAILED', 'INVALID_ACTION', 'INVALID_ACTIONS',
+  'ENOENT', 'EACCES', 'EPERM', 'EISDIR', 'ENOTDIR', 'ENOSPC', 'EROFS', 'EMFILE', 'ENFILE', 'EEXIST']);
+
+export class DuelFailure extends Error {
+  constructor(stage, code) {
+    const safeStage = STAGES.has(stage) ? stage : 'match';
+    const safeCode = SAFE_CODES.has(code) || (typeof code === 'string' && /^HTTP_[45]\d{2}$/.test(code)) ? code : 'INTERNAL_ERROR';
+    super(`External duel failed at ${safeStage} (${safeCode})`);
+    this.name = 'DuelFailure';
+    this.stage = safeStage;
+    this.code = safeCode;
+  }
+}
+
+function safeFailure(error, stage) {
+  if (error instanceof DuelFailure) return error;
+  const code = error?.code === 'ERR_ASSERTION' ? 'ASSERTION_FAILED' : error?.code;
+  return new DuelFailure(stage, code);
+}
+
+export function formatDuelFailure(error) {
+  // Reapply the allowlist at the output boundary even if an Error was mutated.
+  const failure = new DuelFailure(error instanceof DuelFailure ? error.stage : 'match',
+    error?.code === 'ERR_ASSERTION' ? 'ASSERTION_FAILED' : error?.code);
+  return { status: 'FAIL', stage: failure.stage, code: failure.code };
+}
+
+function checkDeadline(signal, deadlineAt, stage) {
+  if (signal?.aborted || performance.now() >= deadlineAt) throw new DuelFailure(stage, 'DEADLINE_EXCEEDED');
+}
+
+function exactKeys(value, allowed) {
+  assert.ok(value && typeof value === 'object' && !Array.isArray(value), 'Replay schema requires an object');
+  const keys = Object.keys(value);
+  assert.ok(keys.length === allowed.length && keys.every(key => allowed.includes(key)), 'Replay schema has unexpected or missing fields');
+}
+
+function rejectCredentialStrings(value, path = []) {
+  if (typeof value === 'string') {
+    const sourceHash = path.length === 3 && path[0] === 'provenance' && path[1] === 'sourceHashes' && SOURCE_FILES.includes(path[2]);
+    assert.ok(!/\bbearer[\s:=]+/i.test(value), 'Replay contains credential-like data');
+    assert.ok(sourceHash || !/[a-f0-9]{64}/i.test(value), 'Replay contains credential-like data');
+  } else if (value && typeof value === 'object') {
+    for (const [key, nested] of Object.entries(value)) rejectCredentialStrings(nested, [...path, key]);
+  }
+}
 
 function rush({ observation: { self, opponent } }) {
   const distance = Math.abs(self.x - opponent.x);
@@ -41,13 +91,35 @@ function frameFor(match) {
 }
 
 export function verifyExternalReplay(replay) {
+  exactKeys(replay, ['schemaVersion', 'provenance', 'mode', 'agentTypes', 'matchId', 'maxTurns', 'winnerAgentId', 'frames', 'decisions', 'evidence']);
+  exactKeys(replay.provenance, ['kind', 'description', 'capturedAt', 'nodeVersion', 'modelCalls', 'serverTimeoutMs', 'clientDecisionTimeoutMs', 'sourceHashes', 'nonClaims']);
+  exactKeys(replay.evidence, ['acceptedActions', 'serverTimeoutCount', 'decisionTimeoutCount', 'authorization']);
+  exactKeys(replay.evidence.acceptedActions, ['Rush', 'Sentinel']);
+  exactKeys(replay.provenance.sourceHashes, SOURCE_FILES);
+  rejectCredentialStrings(replay);
   assert.equal(replay.schemaVersion, 1);
   assert.equal(replay.mode, 'fight');
   assert.deepEqual(replay.agentTypes, ['external', 'external']);
   assert.equal(replay.provenance.kind, 'single-runner-scripted-http-duel');
+  assert.equal(replay.provenance.description, PROVENANCE_DESCRIPTION);
+  assert.deepEqual(replay.provenance.nonClaims, NON_CLAIMS);
+  assert.match(replay.provenance.capturedAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+  assert.equal(new Date(replay.provenance.capturedAt).toISOString(), replay.provenance.capturedAt);
+  assert.match(replay.provenance.nodeVersion, /^v\d+\.\d+\.\d+$/);
+  assert.equal(replay.provenance.serverTimeoutMs, 5000);
+  assert.equal(replay.provenance.clientDecisionTimeoutMs, 4000);
   assert.equal(replay.provenance.modelCalls, 0);
+  assert.match(replay.matchId, /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
+  assert.ok(Array.isArray(replay.frames) && replay.frames.length <= 37);
+  assert.ok(Array.isArray(replay.decisions));
+  for (const decision of replay.decisions) exactKeys(decision, ['agentId', 'name', 'matchId', 'turn', 'mode', 'observation', 'allowedActions', 'action', 'accepted', 'statusCode']);
+  assert.ok(Array.isArray(replay.evidence.authorization));
+  assert.equal(replay.evidence.authorization.length, 2);
+  for (const authorization of replay.evidence.authorization) exactKeys(authorization, ['agentId', 'name', 'opponentAgentId', 'mode', 'granted', 'consumed']);
   assert.ok(replay.frames.length > 1);
   const first = replay.frames[0];
+  for (const side of ['left', 'right']) assert.match(first[side].agentId, /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/);
+  assert.notEqual(first.left.agentId, first.right.agentId);
   assert.equal(first.left.name, 'Rush');
   assert.equal(first.right.name, 'Sentinel');
   let expected = createMatch(replay.matchId,
@@ -99,24 +171,51 @@ export function verifyExternalReplay(replay) {
   return { frames: replay.frames.length, turns: expected.turn, acceptedActions, timeoutCount: 0 };
 }
 
-async function writeVerifiedReplay(outputPath, replay) {
-  verifyExternalReplay(replay);
+export async function writeVerifiedReplay(outputPath, replay, {
+  signal,
+  deadlineAt = Infinity,
+  writeTemporary = writeFile,
+  commitTemporary = rename,
+} = {}) {
+  let stage = 'verification';
+  checkDeadline(signal, deadlineAt, stage);
+  try { verifyExternalReplay(replay); }
+  catch (error) { throw safeFailure(error, stage); }
+  checkDeadline(signal, deadlineAt, stage);
   const target = resolve(outputPath);
   const temporary = `${target}.${randomUUID()}.tmp`;
+  let commitStarted = false;
+  let primaryFailed = false;
   try {
-    await writeFile(temporary, `${JSON.stringify(replay, null, 2)}\n`, { flag: 'wx' });
-    await rename(temporary, target);
+    stage = 'output-write';
+    const serialized = `${JSON.stringify(replay, null, 2)}\n`;
+    checkDeadline(signal, deadlineAt, stage);
+    await writeTemporary(temporary, serialized, { flag: 'wx', signal });
+    stage = 'output-commit';
+    checkDeadline(signal, deadlineAt, stage);
+    // This is the commit boundary. Once rename starts, a later abort must not
+    // delete or restore the target: rename may already have committed it.
+    commitStarted = true;
+    await commitTemporary(temporary, target);
+  } catch (error) {
+    primaryFailed = true;
+    if (!commitStarted && (signal?.aborted || performance.now() >= deadlineAt)) throw new DuelFailure(stage, 'DEADLINE_EXCEEDED');
+    throw safeFailure(error, stage);
   } finally {
-    await unlink(temporary).catch(error => { if (error.code !== 'ENOENT') throw error; });
+    await unlink(temporary).catch(error => {
+      if (error.code !== 'ENOENT' && !primaryFailed) throw safeFailure(error, 'cleanup');
+    });
   }
 }
 
 export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}) {
   if (!Number.isInteger(maxDurationMs) || maxDurationMs < 1 || maxDurationMs > 120000) {
-    throw new Error('Duel deadline must be an integer from 1 to 120000 ms');
+    throw new DuelFailure('configuration', 'INVALID_ARGUMENT');
   }
+  let stage = 'startup';
+  const deadlineAt = performance.now() + maxDurationMs;
   const controller = new AbortController();
-  const deadline = setTimeout(() => controller.abort(new Error('External duel deadline exceeded')), maxDurationMs);
+  const deadline = setTimeout(() => controller.abort(new DuelFailure(stage, 'DEADLINE_EXCEEDED')), maxDurationMs);
   const worker = new Worker(new URL(import.meta.url), {
     workerData: { startArena: true },
     // The proof's 4-second client budget targets the default 5-second server deadline.
@@ -132,8 +231,8 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
         controller.signal.removeEventListener('abort', aborted);
         yes(url);
       });
-      worker.once('error', no);
-      worker.once('exit', code => { if (code !== 0) no(new Error('Isolated arena stopped before startup')); });
+      worker.once('error', () => no(new DuelFailure('startup', 'WORKER_ERROR')));
+      worker.once('exit', code => { if (code !== 0) no(new DuelFailure('startup', 'WORKER_ERROR')); });
     });
     const api = (path, { method = 'GET', body, token } = {}) => new Promise((yes, no) => {
       const json = body === undefined ? undefined : JSON.stringify(body);
@@ -152,19 +251,20 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
         response.on('error', no);
         response.on('end', () => {
           if (response.statusCode < 200 || response.statusCode >= 300) {
-            no(new Error(`Local arena request failed: HTTP ${response.statusCode}`));
+            no(new DuelFailure(stage, `HTTP_${response.statusCode}`));
             return;
           }
           try { yes({ statusCode: response.statusCode, body: JSON.parse(raw) }); }
-          catch { no(new Error('Local arena returned invalid JSON')); }
+          catch { no(new DuelFailure(stage, 'INVALID_RESPONSE')); }
         });
       });
-      request.on('error', () => no(controller.signal.aborted ? controller.signal.reason : new Error('Local arena request failed')));
+      request.on('error', () => no(controller.signal.aborted ? controller.signal.reason : new DuelFailure(stage, 'NETWORK_ERROR')));
       request.end(json);
     });
     const state = async () => (await api('/api/state')).body;
     const clients = [];
     const decisions = [];
+    stage = 'registration';
     for (const [name, selector] of [['Rush', rush], ['Sentinel', sentinel]]) {
       const { body: registration } = await api('/api/agents', { method: 'POST', body: { name } });
       assert.equal(typeof registration.id, 'string');
@@ -186,6 +286,7 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
       assert.equal((await client.next()).waiting, true);
     }
     const authorization = [];
+    stage = 'authorization';
     for (const [index, client] of clients.entries()) {
       const opponentAgentId = clients[1 - index].id;
       const ready = await api(`/api/agents/${client.id}/ready`, {
@@ -195,6 +296,7 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
       assert.equal(ready.body.opponentAgentId, opponentAgentId);
       authorization.push({ agentId: client.id, name: client.name, opponentAgentId, mode: 'fight', granted: true, consumed: false });
     }
+    stage = 'match';
     const created = await api('/api/matches', {
       method: 'POST', body: { leftAgentId: clients[0].id, rightAgentId: clients[1].id, mode: 'fight' },
     });
@@ -210,7 +312,7 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
     }
     const frames = [frameFor(current.match)];
     while (current.match.status === 'running') {
-      if (controller.signal.aborted) throw controller.signal.reason;
+      checkDeadline(controller.signal, deadlineAt, stage);
       const jobs = await Promise.all(clients.map(client => client.next()));
       await Promise.all(jobs.map((job, index) => job.waiting ? null : clients[index].answer(job)));
       current = await state();
@@ -221,20 +323,27 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
       }
       if (current.match.status === 'running') await pause(30, undefined, { signal: controller.signal });
     }
-    const sourceHashes = Object.fromEntries(await Promise.all(SOURCE_FILES.map(async name =>
-      [name, createHash('sha256').update(await readFile(resolve(ROOT, name))).digest('hex')])));
+    stage = 'source-hashing';
+    checkDeadline(controller.signal, deadlineAt, stage);
+    const sourceHashes = Object.fromEntries(await Promise.all(SOURCE_FILES.map(async name => {
+      checkDeadline(controller.signal, deadlineAt, stage);
+      const source = await readFile(resolve(ROOT, name), { signal: controller.signal });
+      checkDeadline(controller.signal, deadlineAt, stage);
+      return [name, createHash('sha256').update(source).digest('hex')];
+    })));
+    checkDeadline(controller.signal, deadlineAt, stage);
     const replay = {
       schemaVersion: 1,
       provenance: {
         kind: 'single-runner-scripted-http-duel',
-        description: 'One local runner controls two named scripted HTTP clients. An unchanged createArenaServer runs in an isolated localhost worker; these are not independent owners or model-backed agents.',
+        description: PROVENANCE_DESCRIPTION,
         capturedAt: new Date().toISOString(),
         nodeVersion: process.version,
         modelCalls: 0,
         serverTimeoutMs: 5000,
         clientDecisionTimeoutMs: 4000,
         sourceHashes,
-        nonClaims: ['No independent community pilot', 'No model quality benchmark', 'No hosted public match server'],
+        nonClaims: NON_CLAIMS,
       },
       mode: 'fight', agentTypes: ['external', 'external'], matchId: current.match.id,
       maxTurns: current.match.maxTurns, winnerAgentId: current.match.winnerAgentId,
@@ -247,11 +356,18 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
         authorization,
       },
     };
+    stage = 'verification';
+    checkDeadline(controller.signal, deadlineAt, stage);
     const serialized = JSON.stringify(replay);
     for (const token of tokens) assert.equal(serialized.includes(token), false, 'Replay contains credentials');
     verifyExternalReplay(replay);
-    if (outputPath) await writeVerifiedReplay(outputPath, replay);
+    checkDeadline(controller.signal, deadlineAt, stage);
+    if (outputPath) await writeVerifiedReplay(outputPath, replay, { signal: controller.signal, deadlineAt });
     return replay;
+  } catch (error) {
+    if (error instanceof DuelFailure) throw error;
+    if (controller.signal.aborted || performance.now() >= deadlineAt) throw new DuelFailure(stage, 'DEADLINE_EXCEEDED');
+    throw safeFailure(error, stage);
   } finally {
     clearTimeout(deadline);
     controller.abort();
@@ -262,7 +378,9 @@ export async function runExternalDuel({ outputPath, maxDurationMs = 45000 } = {}
       worker.on('message', onStopped);
     });
     worker.postMessage({ stop: true });
-    await Promise.race([stopped, pause(200)]);
+    let graceTimer;
+    await Promise.race([stopped, new Promise(resolveStopped => { graceTimer = setTimeout(resolveStopped, 200); })]);
+    clearTimeout(graceTimer);
     worker.off('message', onStopped);
     // Worker termination also cancels any private match timers after an error/deadline.
     await worker.terminate();
@@ -279,6 +397,7 @@ if (!isMainThread && workerData?.startArena) {
 } else if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const args = process.argv.slice(2);
   if (args.length && (args.length !== 2 || args[0] !== '--output' || !args[1])) {
+    console.error(JSON.stringify(formatDuelFailure(new DuelFailure('configuration', 'INVALID_ARGUMENT'))));
     console.error('Usage: node examples/external-duel.mjs [--output PATH]');
     process.exitCode = 1;
   } else {
@@ -287,9 +406,9 @@ if (!isMainThread && workerData?.startArena) {
       console.log(JSON.stringify({ status: 'PASS', scope: 'One runner, two scripted HTTP clients; no models or independent owners',
         ...verification, authorizationConsumed: replay.evidence.authorization.every(value => value.consumed),
         ...(args[1] ? { output: resolve(args[1]) } : {}) }));
-    }).catch(() => {
+    }).catch(error => {
       // Keep assertion details, provider data and credentials out of CLI output.
-      console.error('External duel failed; no verified replay was written. Check the local setup and try again.');
+      console.error(JSON.stringify(formatDuelFailure(error)));
       process.exitCode = 1;
     });
   }

@@ -36,7 +36,7 @@ This starts an isolated arena on an ephemeral localhost port, registers **Rush**
 
 The JSON recording includes every resolved turn, the clients' observations and accepted actions, timeout counts and source hashes. The runner verifies the capture against the engine before saving and omits registration tokens. [Watch this integration recording](https://safal207.github.io/agent-arena/promo/?replay=external#replay), then inspect [the saved evidence](promo/external-replay.json). This demonstrates the local HTTP path; independent builder participation and model comparisons remain future work.
 
-Change the strategies in [examples/external-duel.mjs](examples/external-duel.mjs) and rerun to compare decisions. For a bot that remains connected to the main arena or calls a model, use the adapter below.
+Change the strategies in [examples/external-duel.mjs](examples/external-duel.mjs) and rerun to compare decisions. Your root-level `external-replay.json` is ignored by Git; the public recording lives under `promo/`. If the command fails, its safe failure stage and code help identify the blocked step without exposing tokens or response bodies. For a bot that remains connected to the main arena or calls a model, use the adapter below.
 
 <a id="подключение-ботов"></a>
 
