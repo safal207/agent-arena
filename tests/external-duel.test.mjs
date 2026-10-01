@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, writeFile, rename, readdir, rm, access } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile, rename, readdir, rm, access } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { tmpdir } from 'node:os';
@@ -173,6 +173,52 @@ test('a later abort cannot roll back an atomic commit that already started', asy
     });
     assert.deepEqual(JSON.parse(await readFile(outputPath, 'utf8')), fixture);
     assert.deepEqual(await readdir(directory), ['replay.json']);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test('temporary cleanup failure preserves the primary write failure and existing target', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'arena-external-primary-failure-'));
+  const outputPath = join(directory, 'replay.json');
+  let temporaryPath;
+  try {
+    await writeFile(outputPath, 'existing-sentinel');
+    await assert.rejects(writeVerifiedReplay(outputPath, fixture, {
+      writeTemporary: async path => {
+        temporaryPath = path;
+        await mkdir(path);
+        const error = new Error('Do not expose private filesystem details');
+        error.code = 'ENOSPC';
+        throw error;
+      },
+    }), error => {
+      assert.deepEqual(formatDuelFailure(error), { status: 'FAIL', stage: 'output-write', code: 'ENOSPC' });
+      return true;
+    });
+    assert.equal(await readFile(outputPath, 'utf8'), 'existing-sentinel');
+    await access(temporaryPath);
+  } finally {
+    // unlink cannot remove the injected directory; this test owns its removal.
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test('temporary cleanup failure still surfaces when no earlier operation failed', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'arena-external-cleanup-only-'));
+  const outputPath = join(directory, 'replay.json');
+  try {
+    await writeFile(outputPath, 'existing-sentinel');
+    await assert.rejects(writeVerifiedReplay(outputPath, fixture, {
+      writeTemporary: async path => { await mkdir(path); },
+      commitTemporary: async () => {},
+    }), error => {
+      const failure = formatDuelFailure(error);
+      assert.equal(failure.stage, 'cleanup');
+      assert.ok(['EISDIR', 'EPERM'].includes(failure.code));
+      return true;
+    });
+    assert.equal(await readFile(outputPath, 'utf8'), 'existing-sentinel');
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

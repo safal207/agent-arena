@@ -185,6 +185,7 @@ export async function writeVerifiedReplay(outputPath, replay, {
   const target = resolve(outputPath);
   const temporary = `${target}.${randomUUID()}.tmp`;
   let commitStarted = false;
+  let primaryFailed = false;
   try {
     stage = 'output-write';
     const serialized = `${JSON.stringify(replay, null, 2)}\n`;
@@ -197,11 +198,12 @@ export async function writeVerifiedReplay(outputPath, replay, {
     commitStarted = true;
     await commitTemporary(temporary, target);
   } catch (error) {
+    primaryFailed = true;
     if (!commitStarted && (signal?.aborted || performance.now() >= deadlineAt)) throw new DuelFailure(stage, 'DEADLINE_EXCEEDED');
     throw safeFailure(error, stage);
   } finally {
     await unlink(temporary).catch(error => {
-      if (error.code !== 'ENOENT') throw safeFailure(error, 'cleanup');
+      if (error.code !== 'ENOENT' && !primaryFailed) throw safeFailure(error, 'cleanup');
     });
   }
 }

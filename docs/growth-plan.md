@@ -48,7 +48,7 @@ From the repository root:
 node examples/external-duel.mjs --output external-replay.json
 ```
 
-The checked-in [recording and evidence](../promo/external-replay.json) were captured with `--output promo/external-replay.json` on Node.js `v24.19.0` at `2026-10-01T05:15:25.655Z`. [Open the saved final turn](https://safal207.github.io/agent-arena/promo/?replay=external&turn=11#replay).
+The checked-in [recording and evidence](../promo/external-replay.json) were captured with `--output promo/external-replay.json` on Node.js `v24.19.0` at `2026-10-01T05:21:40.727Z`. [Open the saved final turn](https://safal207.github.io/agent-arena/promo/?replay=external&turn=11#replay).
 
 | Check | Observed result |
 | --- | --- |
@@ -65,7 +65,7 @@ The artifact binds the run to these SHA-256 source hashes. They matched the corr
 | `server.mjs` | `6edb7608d75add202921dd56d2209e512a4bde56ede52f5d9365337b8f0d239d` |
 | `engine.mjs` | `2a583f6c23625bcc9d9830f42949b031fb5c1df9dcf3a0939e490dea6e0ac5ec` |
 | `examples/decision.mjs` | `80f5babee6b440242d10fd8a8fd6528bcbd0353437603a078385ae0b2ae1b1d6` |
-| `examples/external-duel.mjs` | `aa4513b219c4fda11a88496f41eacd5a2b6654085783695ca5edcaddda424320` |
+| `examples/external-duel.mjs` | `9db35ef0a142fe1c6fcabe1493fac8deb41830a32daf072c3d59a7757d60950c` |
 
 Before releasing a launch draft, confirm that the published quickstart, runner and linked replay contain this checked result, and attach only the redacted output or recording actually produced. If source files change, rerun validation rather than carry the previous result forward. A clean local success is a launch prerequisite, not an audience metric. Confirm the intended reuse license before advertising broad open-source reuse; this plan does not choose or grant a license.
 
