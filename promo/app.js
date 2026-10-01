@@ -135,7 +135,8 @@ function shareUrl(turn) {
   const query = new URLSearchParams();
   if (recordingId === 'external') query.set('replay', 'external');
   if (turn !== undefined) query.set('turn', String(turn));
-  return `${destination}${query.size ? `?${query}` : ''}${turn !== undefined || recordingId === 'external' ? '#replay' : ''}`;
+  const encoded = query.toString();
+  return `${destination}${encoded ? `?${encoded}` : ''}${turn !== undefined || recordingId === 'external' ? '#replay' : ''}`;
 }
 
 async function copyText(message, success) {

@@ -3,7 +3,7 @@
   "provenance": {
     "kind": "single-runner-scripted-http-duel",
     "description": "One local runner controls two named scripted HTTP clients. An unchanged createArenaServer runs in an isolated localhost worker; these are not independent owners or model-backed agents.",
-    "capturedAt": "2026-10-01T04:47:40.035Z",
+    "capturedAt": "2026-10-01T05:15:25.655Z",
     "nodeVersion": "v24.19.0",
     "modelCalls": 0,
     "serverTimeoutMs": 5000,
@@ -12,7 +12,7 @@
       "server.mjs": "6edb7608d75add202921dd56d2209e512a4bde56ede52f5d9365337b8f0d239d",
       "engine.mjs": "2a583f6c23625bcc9d9830f42949b031fb5c1df9dcf3a0939e490dea6e0ac5ec",
       "examples/decision.mjs": "80f5babee6b440242d10fd8a8fd6528bcbd0353437603a078385ae0b2ae1b1d6",
-      "examples/external-duel.mjs": "8d42dbe7b6e0ce52237c73ebe2061ae5d73c490915239cd5791009479cc459c5"
+      "examples/external-duel.mjs": "aa4513b219c4fda11a88496f41eacd5a2b6654085783695ca5edcaddda424320"
     },
     "nonClaims": [
       "No independent community pilot",
@@ -25,7 +25,7 @@
     "external",
     "external"
   ],
-  "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+  "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
   "maxTurns": 36,
   "winnerAgentId": null,
   "frames": [
@@ -34,7 +34,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 100,
         "x": 22,
@@ -42,7 +42,7 @@
         "action": "guard"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 100,
         "x": 78,
@@ -58,7 +58,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 100,
         "x": 31,
@@ -66,7 +66,7 @@
         "action": "approach"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 100,
         "x": 69,
@@ -82,7 +82,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 100,
         "x": 40,
@@ -90,7 +90,7 @@
         "action": "approach"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 100,
         "x": 60,
@@ -106,7 +106,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 100,
         "x": 40,
@@ -114,7 +114,7 @@
         "action": "special"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 93,
         "x": 60,
@@ -130,7 +130,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 83,
         "x": 40,
@@ -138,7 +138,7 @@
         "action": "special"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 67,
         "x": 60,
@@ -155,7 +155,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 66,
         "x": 40,
@@ -163,7 +163,7 @@
         "action": "special"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 41,
         "x": 60,
@@ -180,7 +180,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 66,
         "x": 40,
@@ -188,7 +188,7 @@
         "action": "kick"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 36,
         "x": 60,
@@ -204,7 +204,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 49,
         "x": 49,
@@ -212,7 +212,7 @@
         "action": "approach"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 36,
         "x": 60,
@@ -228,7 +228,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 32,
         "x": 49,
@@ -236,7 +236,7 @@
         "action": "kick"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 19,
         "x": 60,
@@ -253,7 +253,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 32,
         "x": 49,
@@ -261,7 +261,7 @@
         "action": "jab"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 16,
         "x": 60,
@@ -277,7 +277,7 @@
       "status": "running",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 15,
         "x": 49,
@@ -285,7 +285,7 @@
         "action": "jab"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 5,
         "x": 60,
@@ -302,7 +302,7 @@
       "status": "finished",
       "winnerAgentId": null,
       "left": {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
         "hp": 0,
         "x": 49,
@@ -310,7 +310,7 @@
         "action": "jab"
       },
       "right": {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
         "hp": 0,
         "x": 60,
@@ -326,9 +326,9 @@
   ],
   "decisions": [
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 1,
       "mode": "fight",
       "observation": {
@@ -358,9 +358,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 1,
       "mode": "fight",
       "observation": {
@@ -390,9 +390,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 2,
       "mode": "fight",
       "observation": {
@@ -422,9 +422,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 2,
       "mode": "fight",
       "observation": {
@@ -454,9 +454,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 3,
       "mode": "fight",
       "observation": {
@@ -486,9 +486,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 3,
       "mode": "fight",
       "observation": {
@@ -518,9 +518,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 4,
       "mode": "fight",
       "observation": {
@@ -550,9 +550,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 4,
       "mode": "fight",
       "observation": {
@@ -582,9 +582,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 5,
       "mode": "fight",
       "observation": {
@@ -614,9 +614,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 5,
       "mode": "fight",
       "observation": {
@@ -646,9 +646,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 6,
       "mode": "fight",
       "observation": {
@@ -678,9 +678,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 6,
       "mode": "fight",
       "observation": {
@@ -710,9 +710,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 7,
       "mode": "fight",
       "observation": {
@@ -742,9 +742,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 7,
       "mode": "fight",
       "observation": {
@@ -774,9 +774,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 8,
       "mode": "fight",
       "observation": {
@@ -806,9 +806,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 8,
       "mode": "fight",
       "observation": {
@@ -838,9 +838,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 9,
       "mode": "fight",
       "observation": {
@@ -870,9 +870,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 9,
       "mode": "fight",
       "observation": {
@@ -902,9 +902,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 10,
       "mode": "fight",
       "observation": {
@@ -934,9 +934,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 10,
       "mode": "fight",
       "observation": {
@@ -966,9 +966,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+      "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
       "name": "Rush",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 11,
       "mode": "fight",
       "observation": {
@@ -998,9 +998,9 @@
       "statusCode": 200
     },
     {
-      "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+      "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
       "name": "Sentinel",
-      "matchId": "52686570-b931-4ff6-a3b6-a35c2f736f25",
+      "matchId": "13c46058-268e-49c3-81ff-b8f16cf7d6da",
       "turn": 11,
       "mode": "fight",
       "observation": {
@@ -1039,17 +1039,17 @@
     "decisionTimeoutCount": 0,
     "authorization": [
       {
-        "agentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "agentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "name": "Rush",
-        "opponentAgentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "opponentAgentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "mode": "fight",
         "granted": true,
         "consumed": true
       },
       {
-        "agentId": "e50a2943-c4d5-4420-a054-e617a0b00ef2",
+        "agentId": "dfa2048f-7206-4499-be0f-5cd8efd9ec62",
         "name": "Sentinel",
-        "opponentAgentId": "16fe4c2b-8374-43fe-afab-093f43086a0c",
+        "opponentAgentId": "abd5f155-9dbd-4bdf-b809-aef7b36687fe",
         "mode": "fight",
         "granted": true,
         "consumed": true
