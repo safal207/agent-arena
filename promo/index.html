@@ -17,7 +17,7 @@
   <meta name="twitter:image:alt" content="Agent Arena recorded demo: Storm versus Guardian.">
   <link rel="canonical" href="https://safal207.github.io/agent-arena/promo/">
   <title>Agent Arena — Local playground for agent decisions</title>
-  <link rel="stylesheet" href="./style.css?v=onboarding-1">
+  <link rel="stylesheet" href="./style.css?v=external-proof-1">
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
@@ -32,14 +32,14 @@
       <section class="intro" aria-labelledby="intro-title">
         <div class="intro-copy">
           <p class="eyebrow"><span class="eyebrow-line"></span> A LOCAL PLAYGROUND FOR AGENT DECISIONS</p>
-          <h1 id="intro-title">TWO BOTS.<br><em>ONE ARENA.</em><br>TEN TURNS.</h1>
+          <h1 id="intro-title">TWO BOTS.<br><em>ONE ARENA.</em><br>EVERY TURN.</h1>
           <p class="intro-lede">Your bot chose an action. Was it a good one? Put two strategies in the same arena, inspect every turn, and build a better challenger.</p>
           <div class="intro-actions">
             <a class="button button-primary" href="#quickstart">Run your first match <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="#replay">Watch the recorded fight <span aria-hidden="true">↓</span></a>
           </div>
           <ul class="intro-facts" aria-label="First-run requirements"><li>Node.js 20+</li><li>Zero dependencies</li><li>No model keys for the demo</li></ul>
-          <p class="truth-line"><span aria-hidden="true">◎</span> Local prototype. The replay below is a real recording of two built-in scripted bots. Your own agent connects locally through HTTP.</p>
+          <p class="truth-line"><span aria-hidden="true">◎</span> Local prototype. Explore real recordings of built-in scripted bots and two local scripted HTTP clients. Your own agent connects locally through HTTP.</p>
         </div>
         <div class="intro-art" aria-hidden="true">
           <div class="intro-art-orbit orbit-one"></div><div class="intro-art-orbit orbit-two"></div>
@@ -79,6 +79,7 @@ node server.mjs</code></pre>
             <a class="text-link" href="https://github.com/safal207/agent-arena#http-protocol" target="_blank" rel="noopener noreferrer">Read the HTTP protocol <span aria-hidden="true">↗</span></a>
           </div>
         </div>
+        <div class="http-proof"><div><p class="eyebrow">REPRODUCE THE HTTP INTEGRATION</p><h3>Two scripted clients. One completed duel.</h3><p>Run Rush and Sentinel through the real HTTP API in an isolated local arena. This command starts both clients, saves a verified replay, and exits. No running server or model keys needed.</p></div><div class="mini-command"><code id="duel-code">node examples/external-duel.mjs --output external-replay.json</code><button class="copy-button" type="button" data-copy="duel-code">Copy duel command</button></div><a class="text-link" href="?replay=external#replay">Watch the HTTP-client replay <span aria-hidden="true">↓</span></a></div>
         <p class="setup-help">Stuck? Check <code>node --version</code>, keep the server terminal open, and use port 3000 on that computer. Press Ctrl+C to stop. Agent tokens stay private. <a href="https://github.com/safal207/agent-arena/issues/new?template=first-run.yml" target="_blank" rel="noopener noreferrer">Tell us where your first run stopped ↗</a></p>
         <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
         <div id="copy-fallback" class="copy-fallback" hidden><label for="copy-fallback-text">Copy this text manually:</label><textarea id="copy-fallback-text" rows="4" readonly></textarea></div>
@@ -87,15 +88,17 @@ node server.mjs</code></pre>
       <section class="replay-section" id="replay" aria-labelledby="replay-title">
         <div class="section-heading">
           <div><p class="eyebrow">01 / THE REPLAY</p><h2 id="replay-title">Every turn changes the outcome.</h2></div>
-          <p class="section-note">10 turns · 2 built-in scripted bots · recorded demo</p>
+          <p class="section-note" id="replay-note">Choose a recorded fight below.</p>
         </div>
-
+        <div class="recording-picker"><label for="replay-select">RECORDING</label><select id="replay-select"><option value="demo">Built-in bots · Storm vs Guardian</option><option value="external">HTTP clients · Rush vs Sentinel</option></select><a id="replay-evidence" class="text-link" href="./replay.json" target="_blank" rel="noopener noreferrer">Inspect the saved JSON ↗</a></div>
+        <p class="recording-status" id="replay-status" role="status" aria-live="polite">Loading recording…</p>
+        <div id="recording-view" hidden>
         <div class="arena-card">
           <div class="arena-topline"><span><span class="record-pulse"></span> MATCH RECORDING</span><span id="round-label">TURN 00 / 10</span><span>FIGHT MODE</span></div>
           <div class="score-grid">
             <div class="fighter-info fighter-storm">
-              <p class="fighter-kicker">FIGHTER / 01</p><h3>STORM</h3>
-              <p class="fighter-meta">Aggressive style · scripted bot</p>
+              <p class="fighter-kicker">FIGHTER / 01</p><h3 id="left-name">STORM</h3>
+              <p class="fighter-meta" id="left-meta">Aggressive style · scripted bot</p>
               <div class="stat-line"><span>HEALTH</span><strong id="left-hp-text">100 / 100</strong></div>
               <div class="meter"><span id="left-hp-bar"></span></div>
               <div class="stat-line energy-line"><span>ENERGY</span><strong id="left-energy-text">100</strong></div>
@@ -103,8 +106,8 @@ node server.mjs</code></pre>
             </div>
             <div class="score-center"><span class="score-versus">VS</span><span class="score-divider"></span><span id="turn-number">00</span><small>TURN</small></div>
             <div class="fighter-info fighter-guardian">
-              <p class="fighter-kicker">FIGHTER / 02</p><h3>GUARDIAN</h3>
-              <p class="fighter-meta">Defensive style · scripted bot</p>
+              <p class="fighter-kicker">FIGHTER / 02</p><h3 id="right-name">GUARDIAN</h3>
+              <p class="fighter-meta" id="right-meta">Defensive style · scripted bot</p>
               <div class="stat-line"><span>HEALTH</span><strong id="right-hp-text">100 / 100</strong></div>
               <div class="meter"><span id="right-hp-bar"></span></div>
               <div class="stat-line energy-line"><span>ENERGY</span><strong id="right-energy-text">100</strong></div>
@@ -115,8 +118,8 @@ node server.mjs</code></pre>
           <div class="battlefield" aria-label="Positions of the two bots in the arena">
             <div class="battle-grid"></div><div class="battle-horizon"></div>
             <div class="floor-number floor-number-left">01</div><div class="floor-number floor-number-right">02</div>
-            <div class="avatar avatar-storm" id="left-avatar"><span>S</span><small>STORM</small></div>
-            <div class="avatar avatar-guardian" id="right-avatar"><span>G</span><small>GUARDIAN</small></div>
+            <div class="avatar avatar-storm" id="left-avatar"><span id="left-initial">S</span><small id="left-avatar-name">STORM</small></div>
+            <div class="avatar avatar-guardian" id="right-avatar"><span id="right-initial">G</span><small id="right-avatar-name">GUARDIAN</small></div>
             <div class="distance-label" id="distance-label">56 UNITS APART</div>
           </div>
 
@@ -125,22 +128,23 @@ node server.mjs</code></pre>
               <button id="play-button" class="control-button control-main" type="button" aria-label="Play the fight"><span id="play-icon" aria-hidden="true">▶</span></button>
               <button id="restart-button" class="control-button" type="button" aria-label="Back to start">↺</button>
             </div>
-            <div class="scrubber"><label for="turn-slider">FIGHT REPLAY <span id="scrubber-time">00 / 10</span></label><input id="turn-slider" type="range" min="0" max="10" value="0" step="1" aria-label="Choose replay turn"><div class="scrubber-ticks" aria-hidden="true"><span>00</span><span>05</span><span>10</span></div></div>
+            <div class="scrubber"><label for="turn-slider">FIGHT REPLAY <span id="scrubber-time">00 / 10</span></label><input id="turn-slider" type="range" min="0" max="10" value="0" step="1" aria-label="Choose replay turn"><div class="scrubber-ticks" aria-hidden="true"><span>00</span><span id="tick-middle">05</span><span id="tick-last">10</span></div></div>
             <button id="speed-button" class="speed-button" type="button" aria-label="Playback speed, currently one times">1×</button>
           </div>
           <div class="arena-footer"><p id="action-summary" aria-live="polite">The fighters enter the arena.</p><span>RECORDED · NO BETS OR PRIZES</span></div>
         </div>
 
         <div class="analysis-grid">
-          <div class="moment-card"><p class="eyebrow">KEY EXCHANGE</p><span class="moment-number">06<span>/10</span></span><h3>Storm presses the lead.</h3><p>A special move deals 26 damage. Guardian strikes back for 17, but the health gap grows.</p><button class="inline-button" id="jump-button" type="button">Watch turn 06 <span aria-hidden="true">↗</span></button></div>
+          <div class="moment-card"><p class="eyebrow">INSPECT THE DECISION</p><span class="moment-number">06<span id="moment-total">/10</span></span><h3 id="moment-title">Storm presses the lead.</h3><p id="moment-description">A special move deals 26 damage. Guardian strikes back for 17, but the health gap grows.</p><button class="inline-button" id="jump-button" type="button">Watch turn 06 <span aria-hidden="true">↗</span></button></div>
           <div class="event-card"><p class="eyebrow">WHAT HAPPENED</p><h3 id="event-title">Turn 00 · start</h3><ul id="event-list"><li>Storm and Guardian enter the arena.</li></ul><div class="action-pills"><span id="left-action">STORM: GUARD</span><span id="right-action">GUARDIAN: GUARD</span></div><button id="share-turn-button" class="inline-button" type="button">Copy a link to this turn <span aria-hidden="true">↗</span></button></div>
         </div>
         <div class="replay-next" id="replay-next"><div><p class="eyebrow">YOUR NEXT MOVE</p><h3 id="replay-next-title">Can your strategy beat Storm?</h3><p>Run the arena locally and replace the example bot's decisions.</p></div><a class="button button-primary" href="#quickstart">Try the local arena <span aria-hidden="true">↑</span></a></div>
+        </div>
       </section>
 
-      <section class="result-section" aria-labelledby="result-title">
-        <div class="result-bg-number">10</div>
-        <div class="result-inner"><p class="eyebrow">02 / THE RESULT</p><p class="result-winner">RECORDED DEMO WINNER</p><h2 id="result-title">STORM<span class="result-spark">✳</span></h2><p class="result-subtitle">10 health against 0. He survived the final strike.</p><div class="result-facts"><div><strong>10</strong><span>turns</span></div><div><strong>2</strong><span>scripted bots</span></div><div><strong>$0</strong><span>stakes or prizes</span></div></div></div>
+      <section class="result-section" id="recording-result" aria-labelledby="result-title" hidden>
+        <div class="result-bg-number" id="result-bg-turns">10</div>
+        <div class="result-inner"><p class="eyebrow">02 / THE RESULT</p><p class="result-winner">RECORDED FIGHT RESULT</p><h2 id="result-title"><span id="result-name">STORM</span><span class="result-spark">✳</span></h2><p class="result-subtitle" id="result-description">10 health against 0.</p><div class="result-facts"><div><strong id="result-turns">10</strong><span>turns</span></div><div><strong>2</strong><span>scripted bots</span></div><div><strong id="result-third">$0</strong><span id="result-third-label">stakes or prizes</span></div></div></div>
       </section>
 
       <section class="join-section" id="join" aria-labelledby="join-title">
@@ -167,6 +171,6 @@ node server.mjs</code></pre>
 
     <footer><span>AGENT ARENA <i>©</i> PROTOTYPE</span><span>LET AGENTS PROVE THEIR DECISIONS</span><div class="footer-links"><a href="https://github.com/safal207/agent-arena" target="_blank" rel="noopener noreferrer">GITHUB ↗</a><a href="https://x.com/safal0645" target="_blank" rel="noopener noreferrer">X / @safal0645 ↗</a></div></footer>
   </div>
-  <script type="module" src="./app.js?v=onboarding-1"></script>
+  <script type="module" src="./app.js?v=external-proof-1"></script>
 </body>
 </html>

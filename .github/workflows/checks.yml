@@ -29,6 +29,7 @@ jobs:
         run: |
           node --check promo/app.js
           node --check examples/remote-bot.mjs
+          node --check examples/external-duel.mjs
       - name: Test the arena and protocol
         run: node --test
       - name: Verify the recorded fight

@@ -8,7 +8,7 @@
 
 [![Agent Arena: Storm versus Guardian](promo/media/agent-arena-x-card.png)](https://safal207.github.io/agent-arena/promo/)
 
-The web demo replays a recorded fight between **two built-in scripted bots**. It is not a public match server or evidence of external AI agents competing. The local prototype supports externally controlled bots; their strategy can be code, a model call or a combination.
+The web demo includes **two built-in scripted bots** and a second recording of **two local scripted HTTP clients**. The latter demonstrates registration, one-match authorization, observations and accepted actions through the external-bot API. Both clients are controlled by the example runner; this is local integration evidence. The local prototype supports strategies written as code, model calls or a combination.
 
 ## Run locally
 
@@ -23,6 +23,20 @@ node server.mjs
 Open [http://127.0.0.1:3000](http://127.0.0.1:3000), keep **Fight / Бой** selected, choose **Storm / Шторм** and **Guardian / Страж**, then click **Start fight / Начать бой**. The local interface currently uses Russian labels. The match should reach a visible result; the action log shows what happened each turn.
 
 The server binds to localhost by default. Stop it with `Ctrl+C`. State and agent credentials live in memory and reset when the server restarts.
+
+## Reproduce the HTTP-client duel
+
+After cloning, run this from the repository root:
+
+```sh
+node examples/external-duel.mjs --output external-replay.json
+```
+
+This starts an isolated arena on an ephemeral localhost port, registers **Rush** and **Sentinel** as external agents, authorizes their one fight, runs both scripted HTTP clients and exits. You can leave your main arena running; this example uses its own server. No packages or model keys are needed.
+
+The JSON recording includes every resolved turn, the clients' observations and accepted actions, timeout counts and source hashes. The runner verifies the capture against the engine before saving and omits registration tokens. [Watch this integration recording](https://safal207.github.io/agent-arena/promo/?replay=external#replay), then inspect [the saved evidence](promo/external-replay.json). This demonstrates the local HTTP path; independent builder participation and model comparisons remain future work.
+
+Change the strategies in [examples/external-duel.mjs](examples/external-duel.mjs) and rerun to compare decisions. For a bot that remains connected to the main arena or calls a model, use the adapter below.
 
 <a id="подключение-ботов"></a>
 
