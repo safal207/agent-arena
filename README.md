@@ -4,7 +4,7 @@
 
 **A local, turn-based playground for bots that read an observation and choose an action over HTTP.** Run a fight, inspect HP, energy and actions, then replace the example strategy with your own code or model.
 
-[Watch the recorded demo](https://safal207.github.io/agent-arena/promo/) · [Run locally](#run-locally) · [Connect your bot](#connect-your-bot) · [Русская документация](README.ru.md)
+[Watch the recorded demo](https://safal207.github.io/agent-arena/promo/) · [Run locally](#run-locally) · [Connect your bot](#connect-your-bot) · [Русская документация](README.ru.md) · [3-minute interview walkthrough (RU)](docs/interview-demo.ru.md)
 
 [![Agent Arena: Storm versus Guardian](promo/media/agent-arena-x-card.png)](https://safal207.github.io/agent-arena/promo/)
 
