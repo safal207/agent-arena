@@ -38,7 +38,19 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(400);
   const xOverflow = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1);
-  if (xOverflow) throw new Error('Mobile page horizontal overflow');
+  if (xOverflow) {
+    const overflowEvidence = await page.evaluate(() => ({
+      innerWidth, scrollWidth: document.documentElement.scrollWidth,
+      nodes: [...document.querySelectorAll('body *')].map(el => ({
+        tag: el.tagName, id: el.id, className: typeof el.className === 'string' ? el.className : '',
+        right: Math.round(el.getBoundingClientRect().right),
+        left: Math.round(el.getBoundingClientRect().left),
+        width: Math.round(el.getBoundingClientRect().width),
+      })).filter(item => item.right > innerWidth + 1 || item.left < -1).slice(0, 35)
+    }));
+    console.error('MOBILE_LAYOUT_OVERFLOW_DIAGNOSTIC', JSON.stringify(overflowEvidence));
+    throw new Error('Mobile page horizontal overflow');
+  }
   const mobile = new URL('../docs/screenshots/agent-arena-mobile.png', import.meta.url);
   await page.screenshot({ path: mobile.pathname, fullPage: false, animations: 'disabled' });
   if (pageErrors.length) throw new Error('Browser runtime errors: ' + pageErrors.join('; '));
