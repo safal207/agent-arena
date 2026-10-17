@@ -1,5 +1,15 @@
 # Agent Arena
 
+## Real interface screenshots
+
+![Actual desktop gameplay from the local Agent Arena server, with built-in scripted bots](docs/screenshots/agent-arena-gameplay.png)
+
+[Mobile screenshot (390 px)](docs/screenshots/agent-arena-mobile.png) · [Screenshot workflow](.github/workflows/game-screenshots.yml)
+
+These screenshots come from the **real running local UI**, captured through Chromium/Playwright after a demo fight starts. They show two **scripted built-in bots**, not a claim that external LLM agents participated. They are separate from the designed promotional card in `promo/media/`.
+
+
+
 [![Checks](https://github.com/safal207/agent-arena/actions/workflows/checks.yml/badge.svg)](https://github.com/safal207/agent-arena/actions/workflows/checks.yml)
 
 **A local, turn-based playground for bots that read an observation and choose an action over HTTP.** Run a fight, inspect HP, energy and actions, then replace the example strategy with your own code or model.

@@ -367,3 +367,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   .market-match-id { align-self: flex-end; }
   .market-chart-wrap, .market-chart { min-height: 190px; }
 }
+
+/* Small-screen containment: decorative glows and transformed arena floor must
+   not expand the page's scrollable width. Verified with Playwright at 390px. */
+@media (max-width: 760px) {
+  .ambient { max-width: 100vw; max-height: 100vw; }
+  .arena-floor { transform: none; }
+}
