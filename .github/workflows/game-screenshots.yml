@@ -5,10 +5,12 @@ on:
     branches: [main, docs/promo-screenshots-20261018]
     paths:
       - "tools/capture-game-screenshots.mjs"
+      - "public/style.css"
       - ".github/workflows/game-screenshots.yml"
   pull_request:
     paths:
       - "tools/capture-game-screenshots.mjs"
+      - "public/style.css"
       - ".github/workflows/game-screenshots.yml"
   workflow_dispatch:
 
