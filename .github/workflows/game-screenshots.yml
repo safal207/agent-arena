@@ -1,0 +1,67 @@
+name: Real Arena Gameplay Screenshots
+
+on:
+  push:
+    branches: [main, docs/promo-screenshots-20261018]
+    paths:
+      - "tools/capture-game-screenshots.mjs"
+      - ".github/workflows/game-screenshots.yml"
+  pull_request:
+    paths:
+      - "tools/capture-game-screenshots.mjs"
+      - ".github/workflows/game-screenshots.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run game test suite
+        run: node --test
+      - name: Install screenshot browser
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Record actual game UI and mobile surface
+        run: node tools/capture-game-screenshots.mjs
+      - name: Check screenshot signatures and sizes
+        run: |
+          python3 - <<'PY'
+          import pathlib, struct
+          for name in ('agent-arena-gameplay.png','agent-arena-mobile.png'):
+              p=pathlib.Path('docs/screenshots')/name
+              data=p.read_bytes()
+              assert data.startswith(b'\x89PNG\r\n\x1a\n') and len(data)>10000, (name,len(data))
+              w,h=struct.unpack('>II',data[16:24])
+              assert w>=390 and h>=700,(name,w,h)
+              print(name, w,h, len(data))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: agent-arena-real-game-screenshots
+          path: docs/screenshots/*.png
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Save verified images to proposed branch
+        if: success() && github.ref_name == 'docs/promo-screenshots-20261018'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- docs/screenshots/agent-arena-gameplay.png docs/screenshots/agent-arena-mobile.png
+          if ! git diff --cached --quiet; then
+            git commit -m 'Capture real local arena game screenshots'
+            git push origin HEAD:docs/promo-screenshots-20261018
+          fi
