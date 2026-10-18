@@ -1,0 +1,62 @@
+{
+  "verifiedAt": "2026-10-03T21:49:32.217033+00:00",
+  "scope": "Local scripted HTTP integration; no model calls, customers or production deployment claimed",
+  "baseCommit": "a380a9953c2d39304090e512f4f9abac750423bd",
+  "nodeVersion": "v24.19.0",
+  "checks": [
+    {
+      "command": "node --test",
+      "revision": "a380a9953c2d39304090e512f4f9abac750423bd",
+      "tests": 33,
+      "pass": 33,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "command": "node --test tests/server.test.mjs tests/decision.test.mjs",
+      "revision": "Proposed changes; file hashes below",
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    {
+      "command": "node promo/verify.mjs",
+      "builtInFrames": 11,
+      "builtInTurns": 10,
+      "httpTurns": 11,
+      "httpAcceptedActions": 22,
+      "status": "PASS"
+    }
+  ],
+  "updatedTestHashes": {
+    "tests/server.test.mjs": "fda4223af90218de827320426dce90cee097e21d24678f903d722d6e910dd0a4",
+    "tests/decision.test.mjs": "f143c04f331f75a3c7d4048a84d12e61f9d7a8365896918b0b114d3ba0436a0f"
+  },
+  "freshDuel": {
+    "command": "node examples/external-duel.mjs --output external-replay.json",
+    "capturedAt": "2026-10-03T21:46:04.271Z",
+    "matchId": "42a385dc-4d2c-4ff4-a954-831d7b03ba61",
+    "frames": 12,
+    "turns": 11,
+    "acceptedActions": {
+      "Rush": 11,
+      "Sentinel": 11
+    },
+    "serverTimeoutCount": 0,
+    "decisionTimeoutCount": 0,
+    "authorizationConsumed": true,
+    "modelCalls": 0,
+    "sourceHashes": {
+      "server.mjs": "6edb7608d75add202921dd56d2209e512a4bde56ede52f5d9365337b8f0d239d",
+      "engine.mjs": "2a583f6c23625bcc9d9830f42949b031fb5c1df9dcf3a0939e490dea6e0ac5ec",
+      "examples/decision.mjs": "80f5babee6b440242d10fd8a8fd6528bcbd0353437603a078385ae0b2ae1b1d6",
+      "examples/external-duel.mjs": "9db35ef0a142fe1c6fcabe1493fac8deb41830a32daf072c3d59a7757d60950c"
+    },
+    "replaySha256": "305ecbcd5e6b049a886d1b20d15aee96d2d2ef575f41fcb4fee7fd252fad10d7",
+    "status": "PASS",
+    "replayPath": "interview-replay-2026-10-04.json"
+  }
+}
