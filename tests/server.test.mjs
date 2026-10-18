@@ -23,6 +23,7 @@ test('an external bot can join, act, and finish a network match', { timeout: 600
     const path = `${base}/api/agents/${id}`;
     const headers = { authorization: `Bearer ${token}`, 'content-type': 'application/json' };
     assert.equal((await fetch(`${path}/next`)).status, 401);
+    assert.equal((await fetch(`${path}/next`, { headers: { authorization: `Bearer ${'0'.repeat(64)}` } })).status, 401);
     assert.equal((await (await fetch(`${path}/next`, { headers })).json()).waiting, true);
     const online = await (await fetch(`${base}/api/state`)).json();
     assert.equal(online.agents.find(agent => agent.id === id).connected, true);
@@ -62,6 +63,7 @@ test('an external bot can join, act, and finish a network match', { timeout: 600
     const deadline = Date.now() + 45000;
     let turnsAnswered = 0;
     let triedInvalid = false;
+    let triedDuplicate = false;
     let final;
     while (Date.now() < deadline) {
       final = (await (await fetch(`${base}/api/state`)).json()).match;
@@ -87,10 +89,19 @@ test('an external bot can join, act, and finish a network match', { timeout: 600
         body: JSON.stringify({ matchId: next.matchId, turn: next.turn, action }),
       });
       assert.equal(actionResponse.status, 200);
+      if (!triedDuplicate) {
+        const duplicate = await fetch(`${path}/action`, {
+          method: 'POST', headers,
+          body: JSON.stringify({ matchId: next.matchId, turn: next.turn, action }),
+        });
+        assert.equal(duplicate.status, 409);
+        triedDuplicate = true;
+      }
       turnsAnswered++;
     }
     assert.equal(final.status, 'finished');
     assert.ok(turnsAnswered > 0);
+    assert.equal(triedDuplicate, true);
     assert.ok(final.events.length > 0);
     assert.ok(final.winnerAgentId === id || final.winnerAgentId === 'demo-storm' || final.winnerAgentId === null);
   } finally {
